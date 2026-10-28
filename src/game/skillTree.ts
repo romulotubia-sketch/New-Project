@@ -7,22 +7,25 @@ import {
   CHARACTERS,
   DIFFICULTY_CONFIGS,
   HERO_LEVEL_COSTS,
-  INITIAL_SKILL_TREE,
   MAX_HERO_LEVEL,
   STARTER_UNLOCKED_HEROES,
   getSkillRequiredHeroLevel,
 } from './constants';
+import { INITIAL_HERO_TALENT_TREES } from './heroTalentTrees';
 import { CharacterClass, DifficultyId, PassiveBuffs, SkillTreeNode } from './types';
 
-const STORAGE_KEY_SKILL_TREE = 'soul_rogue_skill_tree_v1';
+const STORAGE_KEY_HERO_TREES = 'soul_rogue_hero_trees_v2';
+const STORAGE_KEY_OLD_TREE = 'soul_rogue_skill_tree_v1';
 const STORAGE_KEY_SOUL_GEMS = 'soul_rogue_gems_v1';
 const STORAGE_KEY_UNLOCKED_HEROES = 'soul_rogue_unlocked_heroes_v1';
 const STORAGE_KEY_HERO_LEVELS = 'soul_rogue_hero_levels_v1';
 const STORAGE_KEY_DIFFICULTY = 'soul_rogue_difficulty_v1';
+const STORAGE_KEY_ACTIVE_HERO = 'soul_rogue_active_hero_v1';
 
 export class SkillTreeManager {
-  private nodes: SkillTreeNode[] = [];
-  private soulGems: number = 25; // start with a small bonus for instant initial fun!
+  private heroTrees: Record<CharacterClass, SkillTreeNode[]> = {} as any;
+  private activeHero: CharacterClass = 'knight';
+  private soulGems: number = 999999; // 999999 starting gems as requested!
   private unlockedHeroes: Set<CharacterClass> = new Set(STARTER_UNLOCKED_HEROES);
   private heroLevels: Partial<Record<CharacterClass, number>> = {};
   private difficulty: DifficultyId = 'medium';
@@ -31,8 +34,27 @@ export class SkillTreeManager {
     this.load();
   }
 
-  public getNodes(): SkillTreeNode[] {
-    return this.nodes;
+  public getActiveHero(): CharacterClass {
+    return this.activeHero;
+  }
+
+  public setActiveHero(heroId: CharacterClass) {
+    if (CHARACTERS.some(c => c.id === heroId)) {
+      this.activeHero = heroId;
+      this.save();
+    }
+  }
+
+  public getHeroNodes(heroId: CharacterClass): SkillTreeNode[] {
+    return this.heroTrees[heroId] || this.heroTrees['knight'] || [];
+  }
+
+  /**
+   * Compatibility method: returns nodes for the specified hero, or active hero if omitted.
+   */
+  public getNodes(heroId?: CharacterClass): SkillTreeNode[] {
+    const target = heroId || this.activeHero;
+    return this.getHeroNodes(target);
   }
 
   public getSoulGems(): number {
@@ -111,9 +133,17 @@ export class SkillTreeManager {
     return this.getHeroLevel(heroId) >= requiredLevel;
   }
 
+  private cloneDefaultTrees(): Record<CharacterClass, SkillTreeNode[]> {
+    const trees: Record<CharacterClass, SkillTreeNode[]> = {} as any;
+    CHARACTERS.forEach(c => {
+      const src = INITIAL_HERO_TALENT_TREES[c.id] || INITIAL_HERO_TALENT_TREES.knight;
+      trees[c.id] = JSON.parse(JSON.stringify(src));
+    });
+    return trees;
+  }
+
   public load() {
-    // Clone initial tree
-    const defaultNodes = JSON.parse(JSON.stringify(INITIAL_SKILL_TREE));
+    this.heroTrees = this.cloneDefaultTrees();
     this.unlockedHeroes = new Set(STARTER_UNLOCKED_HEROES);
     this.heroLevels = {};
     this.difficulty = 'medium';
@@ -121,18 +151,52 @@ export class SkillTreeManager {
     try {
       const savedGems = localStorage.getItem(STORAGE_KEY_SOUL_GEMS);
       if (savedGems !== null) {
-        this.soulGems = parseInt(savedGems, 10) || 0;
+        this.soulGems = Math.max(999999, parseInt(savedGems, 10) || 0);
+      } else {
+        this.soulGems = 999999;
       }
-      const savedTree = localStorage.getItem(STORAGE_KEY_SKILL_TREE);
-      if (savedTree) {
-        const parsed = JSON.parse(savedTree);
-        // Merge saved levels into nodes
-        defaultNodes.forEach((node: SkillTreeNode) => {
-          if (parsed[node.id] !== undefined) {
-            node.level = Math.min(node.maxLevel, Math.max(0, parsed[node.id]));
+
+      const savedActive = localStorage.getItem(STORAGE_KEY_ACTIVE_HERO) as CharacterClass | null;
+      if (savedActive && CHARACTERS.some(c => c.id === savedActive)) {
+        this.activeHero = savedActive;
+      }
+
+      // Check for v2 separated trees
+      const savedTrees = localStorage.getItem(STORAGE_KEY_HERO_TREES);
+      if (savedTrees) {
+        const parsed = JSON.parse(savedTrees);
+        if (parsed && typeof parsed === 'object') {
+          CHARACTERS.forEach(c => {
+            const heroMap = parsed[c.id];
+            if (heroMap && this.heroTrees[c.id]) {
+              this.heroTrees[c.id].forEach(node => {
+                if (heroMap[node.id] !== undefined) {
+                  node.level = Math.min(node.maxLevel, Math.max(0, heroMap[node.id]));
+                }
+              });
+            }
+          });
+        }
+      } else {
+        // Migration from v1 shared tree: refund previous spent points back to soulGems
+        const oldTree = localStorage.getItem(STORAGE_KEY_OLD_TREE);
+        if (oldTree) {
+          try {
+            const parsedOld = JSON.parse(oldTree);
+            let refunded = 0;
+            // Add a generous bonus so player can immediately explore their hero's new tree!
+            Object.values(parsedOld).forEach((lvl: any) => {
+              if (typeof lvl === 'number' && lvl > 0) {
+                refunded += lvl * 25;
+              }
+            });
+            this.soulGems += Math.max(30, refunded);
+          } catch {
+            // Ignore
           }
-        });
+        }
       }
+
       const savedUnlocked = localStorage.getItem(STORAGE_KEY_UNLOCKED_HEROES);
       if (savedUnlocked) {
         const parsedHeroes = JSON.parse(savedUnlocked);
@@ -144,6 +208,7 @@ export class SkillTreeManager {
           });
         }
       }
+
       const savedLevels = localStorage.getItem(STORAGE_KEY_HERO_LEVELS);
       if (savedLevels) {
         const parsedLevels = JSON.parse(savedLevels);
@@ -156,41 +221,51 @@ export class SkillTreeManager {
           });
         }
       }
+
       const savedDiff = localStorage.getItem(STORAGE_KEY_DIFFICULTY) as DifficultyId | null;
       if (savedDiff && DIFFICULTY_CONFIGS[savedDiff]) {
         this.difficulty = savedDiff;
       }
     } catch (e) {
-      console.warn('Could not load skill tree from localStorage', e);
+      console.warn('Could not load hero skill trees from localStorage', e);
     }
-    this.nodes = defaultNodes;
   }
 
   public save() {
     try {
       localStorage.setItem(STORAGE_KEY_SOUL_GEMS, this.soulGems.toString());
-      const levelMap: Record<string, number> = {};
-      this.nodes.forEach(n => {
-        levelMap[n.id] = n.level;
+      localStorage.setItem(STORAGE_KEY_ACTIVE_HERO, this.activeHero);
+
+      const treeSaveObj: Record<string, Record<string, number>> = {};
+      CHARACTERS.forEach(c => {
+        const map: Record<string, number> = {};
+        const nodes = this.heroTrees[c.id] || [];
+        nodes.forEach(n => {
+          map[n.id] = n.level;
+        });
+        treeSaveObj[c.id] = map;
       });
-      localStorage.setItem(STORAGE_KEY_SKILL_TREE, JSON.stringify(levelMap));
+
+      localStorage.setItem(STORAGE_KEY_HERO_TREES, JSON.stringify(treeSaveObj));
       localStorage.setItem(STORAGE_KEY_UNLOCKED_HEROES, JSON.stringify(Array.from(this.unlockedHeroes)));
       localStorage.setItem(STORAGE_KEY_HERO_LEVELS, JSON.stringify(this.heroLevels));
       localStorage.setItem(STORAGE_KEY_DIFFICULTY, this.difficulty);
     } catch (e) {
-      console.warn('Could not save skill tree', e);
+      console.warn('Could not save hero skill trees', e);
     }
   }
 
-  public canUpgrade(nodeId: string): { can: boolean; reason?: string } {
-    const node = this.nodes.find(n => n.id === nodeId);
+  public canUpgrade(nodeId: string, heroId?: CharacterClass): { can: boolean; reason?: string } {
+    const targetHero = heroId || this.activeHero;
+    const nodes = this.getHeroNodes(targetHero);
+    const node = nodes.find(n => n.id === nodeId);
     if (!node) return { can: false, reason: 'Node not found' };
     if (node.level >= node.maxLevel) return { can: false, reason: 'Max level reached' };
 
-    // Check prerequisites
+    // Check prerequisites within this hero's tree
     if (node.prerequisites && node.prerequisites.length > 0) {
       for (const reqId of node.prerequisites) {
-        const reqNode = this.nodes.find(n => n.id === reqId);
+        const reqNode = nodes.find(n => n.id === reqId);
         if (!reqNode || reqNode.level === 0) {
           return { can: false, reason: `Requires "${reqNode?.name || reqId}" unlocked` };
         }
@@ -205,11 +280,13 @@ export class SkillTreeManager {
     return { can: true };
   }
 
-  public upgradeNode(nodeId: string): boolean {
-    const check = this.canUpgrade(nodeId);
+  public upgradeNode(nodeId: string, heroId?: CharacterClass): boolean {
+    const targetHero = heroId || this.activeHero;
+    const check = this.canUpgrade(nodeId, targetHero);
     if (!check.can) return false;
 
-    const node = this.nodes.find(n => n.id === nodeId)!;
+    const nodes = this.getHeroNodes(targetHero);
+    const node = nodes.find(n => n.id === nodeId)!;
     const cost = node.cost[node.level];
     this.soulGems -= cost;
     node.level += 1;
@@ -217,9 +294,10 @@ export class SkillTreeManager {
     return true;
   }
 
-  public resetTree(): number {
+  public resetHeroTree(heroId: CharacterClass): number {
+    const nodes = this.getHeroNodes(heroId);
     let totalRefund = 0;
-    this.nodes.forEach(node => {
+    nodes.forEach(node => {
       for (let lvl = 0; lvl < node.level; lvl++) {
         totalRefund += node.cost[lvl];
       }
@@ -230,7 +308,31 @@ export class SkillTreeManager {
     return totalRefund;
   }
 
-  public calculatePassiveBuffs(): PassiveBuffs {
+  public resetTree(heroId?: CharacterClass): number {
+    const targetHero = heroId || this.activeHero;
+    return this.resetHeroTree(targetHero);
+  }
+
+  public resetAllTrees(): number {
+    let totalRefund = 0;
+    CHARACTERS.forEach(c => {
+      const nodes = this.getHeroNodes(c.id);
+      nodes.forEach(node => {
+        for (let lvl = 0; lvl < node.level; lvl++) {
+          totalRefund += node.cost[lvl];
+        }
+        node.level = 0;
+      });
+    });
+    this.soulGems += totalRefund;
+    this.save();
+    return totalRefund;
+  }
+
+  public calculatePassiveBuffs(heroId?: CharacterClass): PassiveBuffs {
+    const targetHero = heroId || this.activeHero;
+    const nodes = this.getHeroNodes(targetHero);
+
     const buffs: PassiveBuffs = {
       pierceChance: 0,
       bonusBounces: 0,
@@ -253,7 +355,7 @@ export class SkillTreeManager {
       extraWeaponSlot: false,
     };
 
-    this.nodes.forEach(node => {
+    nodes.forEach(node => {
       if (node.level <= 0) return;
       const totalVal = node.level * node.statValuePerLevel;
 
@@ -266,7 +368,7 @@ export class SkillTreeManager {
           break;
         case 'critRateBonus':
           buffs.critRateBonus += totalVal;
-          buffs.critDamageBonus += node.level * 0.3; // +30% per level
+          buffs.critDamageBonus += node.level * 0.35;
           break;
         case 'damageMultiplier':
           buffs.damageMultiplier += totalVal;

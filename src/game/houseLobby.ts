@@ -9,6 +9,7 @@ import { skillTreeManager } from './skillTree';
 import { sounds } from './sound';
 import { CharacterClass, FloatingText, Particle, Vector2D, Weapon } from './types';
 import { WeaponRenderer } from './weaponRenderer';
+import { HeroSpriteRenderer } from './heroSprites';
 
 export interface HouseCollider {
   x: number;
@@ -1194,8 +1195,8 @@ export class HouseLobbyEngine {
       ctx.stroke();
     }
 
-    // Propped starter weapon resting neatly beside the hero (Knight & Mage render their iconic resting gear natively!)
-    if (starterWeapon && spot.classId !== 'knight' && spot.classId !== 'mage') {
+    // Propped starter weapon resting neatly beside the hero (Knight, Mage, and Sprite-Sheet Heroes render their iconic resting gear natively!)
+    if (starterWeapon && spot.classId !== 'knight' && spot.classId !== 'mage' && !HeroSpriteRenderer.isSupportedClass(spot.classId)) {
       const side = spot.facingRight ? 16 : -16;
       ctx.save();
       ctx.translate(spot.x + side, spot.y + 8);

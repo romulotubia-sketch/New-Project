@@ -300,7 +300,20 @@ export interface Obstacle {
   y: number;
   width: number;
   height: number;
-  type: 'crate' | 'barrel' | 'pillar' | 'brazier' | 'chest' | 'statue' | 'portal' | 'shop_table';
+  type:
+    | 'crate'
+    | 'barrel'
+    | 'pillar'
+    | 'brazier'
+    | 'chest'
+    | 'statue'
+    | 'portal'
+    | 'shop_table'
+    | 'wishing_well'
+    | 'blood_altar'
+    | 'fortune_wheel'
+    | 'blacksmith_forge'
+    | 'cursed_monolith';
   hp?: number;
   maxHp?: number;
   isExplosive?: boolean;
@@ -354,7 +367,7 @@ export interface FloatingText {
   scale: number;
 }
 
-export type RoomType = 'start' | 'combat' | 'elite' | 'chest' | 'shop' | 'statue' | 'boss';
+export type RoomType = 'start' | 'combat' | 'elite' | 'chest' | 'shop' | 'statue' | 'boss' | 'event';
 
 export interface RoomDoor {
   x: number;

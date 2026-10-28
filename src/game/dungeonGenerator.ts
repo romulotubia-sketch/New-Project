@@ -101,8 +101,8 @@ export class DungeonGenerator {
       }
     }
 
-    // 2. Attach side-branch rooms (Chest, Shop, Statue, extra Combat) to non-boss rooms
-    const branchTypes: RoomType[] = ['combat', 'chest', 'shop', 'statue'];
+    // 2. Attach side-branch rooms (Chest, Shop, Statue, Event, extra Combat) to non-boss rooms
+    const branchTypes: RoomType[] = ['combat', 'chest', 'shop', 'statue', 'event'];
     for (const type of branchTypes) {
       let placed = false;
       let attempts = 0;
@@ -183,7 +183,7 @@ export class DungeonGenerator {
         width: ROOM_WIDTH,
         height: ROOM_HEIGHT,
         type,
-        isCleared: type === 'start' || type === 'chest' || type === 'shop' || type === 'statue',
+        isCleared: type === 'start' || type === 'chest' || type === 'shop' || type === 'statue' || type === 'event',
         isDiscovered: type === 'start',
         doors: [],
         enemies: [],
@@ -442,6 +442,93 @@ export class DungeonGenerator {
         { x: cx - 110, y: cy - 16, width: 32, height: 32, type: 'brazier' },
         { x: cx + 78, y: cy - 16, width: 32, height: 32, type: 'brazier' }
       );
+    } else if (room.type === 'event') {
+      const eventTypes: Array<'wishing_well' | 'blood_altar' | 'fortune_wheel' | 'blacksmith_forge' | 'cursed_monolith'> = [
+        'wishing_well',
+        'blood_altar',
+        'fortune_wheel',
+        'blacksmith_forge',
+        'cursed_monolith',
+      ];
+      const eventPick = eventTypes[(room.index + floorNumber * 2) % eventTypes.length];
+
+      if (eventPick === 'wishing_well') {
+        room.obstacles.push(
+          {
+            x: cx - 26,
+            y: cy - 26,
+            width: 52,
+            height: 52,
+            type: 'wishing_well',
+            opened: false,
+            interactPrompt: 'TAP OR [F] TO TOSS 15 COINS INTO WISHING WELL',
+            data: { uses: 0, maxUses: 3, cost: 15 },
+          },
+          { x: cx - 96, y: cy - 20, width: 32, height: 32, type: 'brazier' },
+          { x: cx + 64, y: cy - 20, width: 32, height: 32, type: 'brazier' }
+        );
+      } else if (eventPick === 'blood_altar') {
+        room.obstacles.push(
+          {
+            x: cx - 26,
+            y: cy - 26,
+            width: 52,
+            height: 52,
+            type: 'blood_altar',
+            opened: false,
+            interactPrompt: 'TAP OR [F] TO MAKE BLOOD PACT (SACRIFICE 1 HP FOR +35% DMG & +25% CRIT)',
+            data: { offered: false },
+          },
+          { x: cx - 96, y: cy - 20, width: 32, height: 32, type: 'brazier' },
+          { x: cx + 64, y: cy - 20, width: 32, height: 32, type: 'brazier' }
+        );
+      } else if (eventPick === 'fortune_wheel') {
+        room.obstacles.push(
+          {
+            x: cx - 28,
+            y: cy - 28,
+            width: 56,
+            height: 56,
+            type: 'fortune_wheel',
+            opened: false,
+            interactPrompt: 'TAP OR [F] TO SPIN GOBLIN WHEEL OF FORTUNE (20 COINS)',
+            data: { spinning: false, spinAngle: 0, cost: 20 },
+          },
+          { x: cx - 96, y: cy - 20, width: 32, height: 32, type: 'brazier' },
+          { x: cx + 64, y: cy - 20, width: 32, height: 32, type: 'brazier' }
+        );
+      } else if (eventPick === 'blacksmith_forge') {
+        room.obstacles.push(
+          {
+            x: cx - 27,
+            y: cy - 25,
+            width: 54,
+            height: 50,
+            type: 'blacksmith_forge',
+            opened: false,
+            interactPrompt: 'TAP OR [F] TO REFORGE WEAPON (+35% DMG & -1 MP COST) [25 COINS]',
+            data: { upgraded: false, cost: 25 },
+          },
+          { x: cx - 96, y: cy - 20, width: 32, height: 32, type: 'brazier' },
+          { x: cx + 64, y: cy - 20, width: 32, height: 32, type: 'brazier' }
+        );
+      } else {
+        // cursed_monolith
+        room.obstacles.push(
+          {
+            x: cx - 25,
+            y: cy - 28,
+            width: 50,
+            height: 56,
+            type: 'cursed_monolith',
+            opened: false,
+            interactPrompt: 'TAP OR [F] TO AWAKEN ABYSSAL TRIAL (HORDE OF PHANTOMS)',
+            data: { activated: false },
+          },
+          { x: cx - 96, y: cy - 20, width: 32, height: 32, type: 'brazier' },
+          { x: cx + 64, y: cy - 20, width: 32, height: 32, type: 'brazier' }
+        );
+      }
     } else if (room.type === 'combat' || room.type === 'elite') {
       // Structured tactical room architecture + breakable crates & TNT barrels
       const layoutPattern = room.index % 3;

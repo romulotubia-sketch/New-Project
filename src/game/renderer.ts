@@ -7,6 +7,8 @@ import { TILE_SIZE } from './constants';
 import { PASSAGE_HALF_WIDTH } from './gameEngine';
 import { KnightSpriteRenderer } from './knightSprite';
 import { MageSpriteRenderer } from './mageSprite';
+import { HeroSpriteRenderer, HERO_PALETTES } from './heroSprites';
+import { DungeonEventsManager } from './dungeonEvents';
 import { MiniMapRenderer } from './miniMapRenderer';
 import {
   ActiveSkillEffects,
@@ -505,6 +507,36 @@ export class GameRenderer {
       ctx.strokeStyle = 'rgba(186, 230, 253, 0.35)';
       ctx.beginPath();
       ctx.arc(cx, cy, 44, 0, Math.PI * 2);
+      ctx.stroke();
+    } else if (room.type === 'event') {
+      // Mystical Violet & Stellar Celestial Runed Sanctuary Carpet
+      ctx.fillStyle = '#2e1065';
+      ctx.fillRect(cx - 96, cy - 64, 192, 128);
+      ctx.fillStyle = '#3b0764';
+      ctx.fillRect(cx - 88, cy - 56, 176, 112);
+      ctx.strokeStyle = '#c084fc';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(cx - 90, cy - 58, 180, 116);
+
+      // Arcane rotating star circle
+      const rot = t * 0.8;
+      ctx.strokeStyle = 'rgba(236, 72, 153, 0.45)';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(cx, cy, 54, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.strokeStyle = 'rgba(192, 132, 252, 0.35)';
+      ctx.beginPath();
+      for (let a = 0; a < 6; a++) {
+        const ang = rot + (a * Math.PI) / 3;
+        const px1 = cx + Math.cos(ang) * 54;
+        const py1 = cy + Math.sin(ang) * 54;
+        const px2 = cx + Math.cos(ang + Math.PI * (2 / 3)) * 54;
+        const py2 = cy + Math.sin(ang + Math.PI * (2 / 3)) * 54;
+        ctx.moveTo(px1, py1);
+        ctx.lineTo(px2, py2);
+      }
       ctx.stroke();
     } else if (room.type === 'combat') {
       // Weathered Gladiator Inner Stone Ring
@@ -1062,6 +1094,15 @@ export class GameRenderer {
       ctx.beginPath();
       ctx.arc(cx, cy, 5, 0, Math.PI * 2);
       ctx.fill();
+    } else if (
+      obs.type === 'wishing_well' ||
+      obs.type === 'blood_altar' ||
+      obs.type === 'fortune_wheel' ||
+      obs.type === 'blacksmith_forge' ||
+      obs.type === 'cursed_monolith'
+    ) {
+      const animTime = Date.now() * 0.003;
+      DungeonEventsManager.renderObstacle(ctx, obs, animTime, player || null);
     }
 
     ctx.restore();
@@ -1303,7 +1344,8 @@ export class GameRenderer {
     const cid = opts.classId;
     const isKnight = cid === 'knight';
     const isMage = cid === 'mage';
-    const hasCustomSprite = isKnight || isMage;
+    const isHeroSheet = HeroSpriteRenderer.isSupportedClass(cid);
+    const hasCustomSprite = isKnight || isMage || isHeroSheet;
     const isResting = opts.animState === 'rest';
     const restSink = !hasCustomSprite && isResting ? Math.min(6, opts.animFrame) : 0;
     const restBreath = !hasCustomSprite && isResting && opts.animFrame >= 5 ? (opts.animFrame === 6 ? -1 : 0) : 0;
@@ -1335,6 +1377,18 @@ export class GameRenderer {
         pixelSize: 2,
         gazeY: Math.round(Math.sin(opts.rotation)),
         showBuiltInStaff: Boolean(opts.showBuiltInWeapon),
+      });
+    } else if (isHeroSheet) {
+      HeroSpriteRenderer.draw(ctx, {
+        classId: cid,
+        x: opts.x,
+        y: opts.y,
+        facingRight: opts.facingRight,
+        state: opts.animState || 'idle',
+        frame: opts.animFrame || 0,
+        pixelSize: 2,
+        gazeY: Math.round(Math.sin(opts.rotation)),
+        showBuiltInWeapon: Boolean(opts.showBuiltInWeapon),
       });
     } else {
       ctx.save();
@@ -1521,7 +1575,7 @@ export class GameRenderer {
 
       WeaponRenderer.drawWeaponSprite(ctx, currentWeapon, reach, 0, 1.0, 0, isFacingLeft);
 
-      ctx.fillStyle = isKnight ? '#f0b589' : isMage ? '#f2b88c' : '#cbd5e1';
+      ctx.fillStyle = isKnight ? '#f0b589' : isMage ? '#f2b88c' : (HERO_PALETTES[cid]?.skin || '#f0b589');
       ctx.strokeStyle = '#0b0d12';
       ctx.lineWidth = 1;
       ctx.fillRect(reach - 4, isFacingLeft ? -2 : -1, 5, 4);

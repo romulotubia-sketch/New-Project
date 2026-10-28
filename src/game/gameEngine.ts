@@ -4,6 +4,7 @@
  */
 
 import { CHARACTERS, DIFFICULTY_CONFIGS, TILE_SIZE, WEAPON_REGISTRY } from './constants';
+import { DungeonEventsManager } from './dungeonEvents';
 import { DungeonGenerator } from './dungeonGenerator';
 import { skillTreeManager } from './skillTree';
 import { sounds } from './sound';
@@ -117,7 +118,7 @@ export class GameEngine {
   public isMouseDown = false;
   public shootTimer = 0;
   public interactPrompt: string | null = null;
-  public nearbyInteractable: { type: 'chest' | 'weapon' | 'statue' | 'portal'; action: () => void } | null = null;
+  public nearbyInteractable: { type: 'chest' | 'weapon' | 'statue' | 'portal' | 'event'; action: () => void } | null = null;
   private lastInteractTimestamp = 0;
   private lastSwitchTimestamp = 0;
 
@@ -134,7 +135,8 @@ export class GameEngine {
     difficulty: DifficultyId = 'medium'
   ) {
     this.difficulty = DIFFICULTY_CONFIGS[difficulty] ? difficulty : 'medium';
-    this.passiveBuffs = skillTreeManager.calculatePassiveBuffs();
+    skillTreeManager.setActiveHero(characterId);
+    this.passiveBuffs = skillTreeManager.calculatePassiveBuffs(characterId);
     const config = CHARACTERS.find(c => c.id === characterId) || CHARACTERS[0];
     const starterWeapon = WEAPON_REGISTRY[config.startingWeaponId] || WEAPON_REGISTRY['bad_pistol'];
 
@@ -5148,7 +5150,7 @@ export class GameEngine {
     let bestCandidate: {
       dist: number;
       prompt: string;
-      type: 'chest' | 'weapon' | 'statue' | 'portal';
+      type: 'chest' | 'weapon' | 'statue' | 'portal' | 'event';
       action: () => void;
     } | null = null;
 
@@ -5183,6 +5185,58 @@ export class GameEngine {
             prompt: 'TAP OR [F] TO ENTER PORTAL',
             type: 'portal',
             action: () => this.requestPortalConfirmation(),
+          };
+        }
+      } else if (obs.type === 'wishing_well' && dist < 72) {
+        if (!bestCandidate || dist < bestCandidate.dist) {
+          const cost = obs.data?.cost || 15;
+          const remaining = (obs.data?.maxUses || 3) - (obs.data?.uses || 0);
+          bestCandidate = {
+            dist,
+            prompt: `TAP OR [F] TO MAKE A WISH (${cost} G) [${remaining} LEFT]`,
+            type: 'event',
+            action: () => DungeonEventsManager.handleWishingWell(this, obs, currentRoom),
+          };
+        }
+      } else if (obs.type === 'blood_altar' && dist < 72) {
+        if (!bestCandidate || dist < bestCandidate.dist) {
+          bestCandidate = {
+            dist,
+            prompt: 'TAP OR [F] SACRIFICE 1 HP (BLOOD PACT)',
+            type: 'event',
+            action: () => DungeonEventsManager.handleBloodAltar(this, obs, currentRoom),
+          };
+        }
+      } else if (obs.type === 'fortune_wheel' && dist < 72) {
+        if (!bestCandidate || dist < bestCandidate.dist) {
+          const cost = obs.data?.cost || 20;
+          const prompt = obs.data?.spinning
+            ? 'SPINNING WHEEL...'
+            : `TAP OR [F] SPIN WHEEL OF FORTUNE (${cost} G)`;
+          bestCandidate = {
+            dist,
+            prompt,
+            type: 'event',
+            action: () => DungeonEventsManager.handleFortuneWheel(this, obs, currentRoom),
+          };
+        }
+      } else if (obs.type === 'blacksmith_forge' && dist < 72) {
+        if (!bestCandidate || dist < bestCandidate.dist) {
+          const cost = obs.data?.cost || 25;
+          bestCandidate = {
+            dist,
+            prompt: `TAP OR [F] REFORGE HELD WEAPON (${cost} G)`,
+            type: 'event',
+            action: () => DungeonEventsManager.handleBlacksmithForge(this, obs),
+          };
+        }
+      } else if (obs.type === 'cursed_monolith' && dist < 72) {
+        if (!bestCandidate || dist < bestCandidate.dist) {
+          bestCandidate = {
+            dist,
+            prompt: 'TAP OR [F] TO TOUCH CURSED MONOLITH',
+            type: 'event',
+            action: () => DungeonEventsManager.handleCursedMonolith(this, obs, currentRoom),
           };
         }
       }

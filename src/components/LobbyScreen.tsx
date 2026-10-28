@@ -15,6 +15,7 @@ import {
 } from '../game/constants';
 import { CODEX_POS, DUMMY_POS, HouseInteractable, HouseLobbyEngine, PORTAL_POS, SHRINE_POS } from '../game/houseLobby';
 import { KnightAnimMode } from '../game/knightSprite';
+import { HeroSpriteRenderer } from '../game/heroSprites';
 import { GameRenderer } from '../game/renderer';
 import { CharacterClass, DifficultyId, Skill } from '../game/types';
 import { useGameSettings } from '../game/settings';
@@ -109,7 +110,7 @@ const HeroLivePreviewCanvas: React.FC<{
       ctx.ellipse(canvas.width / 2, canvas.height - 10, 14, 5, 0, 0, Math.PI * 2);
       ctx.fill();
 
-      const useBuiltInSheetWeapon = classId === 'knight' || classId === 'mage';
+      const useBuiltInSheetWeapon = classId === 'knight' || classId === 'mage' || HeroSpriteRenderer.isSupportedClass(classId);
       GameRenderer.drawHeroCharacter(ctx, {
         classId,
         x: Math.round(canvas.width / 2 - 2),
@@ -262,6 +263,7 @@ export const LobbyScreen: React.FC<LobbyScreenProps> = ({ onStartGame, onOpenSki
       setInspectorTab('loadout');
     } else if (item.kind === 'shrine') {
       sounds.soulGem();
+      if (pickedClass) skillTreeManager.setActiveHero(pickedClass);
       onOpenSkillTree();
     } else if (item.kind === 'codex') {
       sounds.shoot('pistol');
@@ -596,9 +598,10 @@ export const LobbyScreen: React.FC<LobbyScreenProps> = ({ onStartGame, onOpenSki
     [pickedClass]
   );
 
-  const passiveBuffs = skillTreeManager.calculatePassiveBuffs();
+  const inspectedHeroId = inspectedHero?.id || pickedClass || 'knight';
+  const passiveBuffs = skillTreeManager.calculatePassiveBuffs(inspectedHeroId);
   const soulGems = skillTreeManager.getSoulGems();
-  const allTreeNodes = skillTreeManager.getNodes();
+  const allTreeNodes = skillTreeManager.getHeroNodes(inspectedHeroId);
   const filteredTreeNodes =
     treeBranch === 'all' ? allTreeNodes : allTreeNodes.filter(n => n.branch === treeBranch);
 
@@ -728,16 +731,18 @@ export const LobbyScreen: React.FC<LobbyScreenProps> = ({ onStartGame, onOpenSki
   };
 
   const handleUpgradeTalentInline = (nodeId: string) => {
-    if (skillTreeManager.upgradeNode(nodeId)) {
+    if (inspectedHero && skillTreeManager.upgradeNode(nodeId, inspectedHero.id)) {
       sounds.levelUp();
       setTalentTick(t => t + 1);
     }
   };
 
   const handleResetTreeInline = () => {
-    skillTreeManager.resetTree();
-    sounds.coin();
-    setTalentTick(t => t + 1);
+    if (inspectedHero) {
+      skillTreeManager.resetHeroTree(inspectedHero.id);
+      sounds.coin();
+      setTalentTick(t => t + 1);
+    }
   };
 
   return (
@@ -1918,7 +1923,7 @@ export const LobbyScreen: React.FC<LobbyScreenProps> = ({ onStartGame, onOpenSki
                       <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5">
                         {filteredTreeNodes.map(node => {
                           const isMaxed = node.level >= node.maxLevel;
-                          const check = skillTreeManager.canUpgrade(node.id);
+                          const check = skillTreeManager.canUpgrade(node.id, inspectedHero?.id);
                           const nextCost = !isMaxed ? node.cost[node.level] : null;
 
                           return (

@@ -217,6 +217,9 @@ export class MiniMapRenderer {
         } else if (room.type === 'elite') {
           fillColor = '#2e1065';
           strokeColor = '#a855f7';
+        } else if (room.type === 'event') {
+          fillColor = '#3b0764';
+          strokeColor = '#ec4899';
         }
 
         if (isCurrent) {
@@ -266,6 +269,9 @@ export class MiniMapRenderer {
         } else if (room.type === 'elite') {
           ctx.fillStyle = '#c084fc';
           ctx.fillText('⚡', centerX, centerY);
+        } else if (room.type === 'event') {
+          ctx.fillStyle = '#f472b6';
+          ctx.fillText('★', centerX, centerY);
         } else if (room.isCleared) {
           // Subtle cleared checkmark in small font
           ctx.fillStyle = '#64748b';

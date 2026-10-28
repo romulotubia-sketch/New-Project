@@ -113,7 +113,7 @@ export default function App() {
   const handleTalentUpdated = useCallback(() => {
     if (engine) {
       engine.player.soulGems = skillTreeManager.getSoulGems();
-      const buffs = skillTreeManager.calculatePassiveBuffs();
+      const buffs = skillTreeManager.calculatePassiveBuffs(engine.player.classId);
       const hpDiff = buffs.bonusMaxHp - engine.passiveBuffs.bonusMaxHp;
       const shieldDiff = buffs.bonusMaxShield - engine.passiveBuffs.bonusMaxShield;
       const energyDiff = buffs.bonusMaxEnergy - engine.passiveBuffs.bonusMaxEnergy;
@@ -214,6 +214,7 @@ export default function App() {
       {/* Persistent Skill Tree Modal (accessible in both Lobby & Game) */}
       {showSkillTree && (
         <SkillTreeModal
+          defaultHeroId={engine?.player.classId || skillTreeManager.getActiveHero()}
           onClose={handleCloseSkillTree}
           onTalentUpdated={handleTalentUpdated}
         />
