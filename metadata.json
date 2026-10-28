@@ -1,0 +1,6 @@
+{
+  "name": "Soul Rogue: Knight's Ascendancy",
+  "description": "Pixel art roguelike dungeon crawler inspired by Soul Knight with multi-skill heroes, procedural rooms, and talent skill tree progression.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
