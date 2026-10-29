@@ -28,28 +28,28 @@ export const PauseModal: React.FC<PauseModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-3 font-pixel select-none">
-      <div className="w-full max-w-lg max-h-[92dvh] overflow-y-auto bg-slate-950 border-4 border-slate-700 rounded-xl p-4 sm:p-5 shadow-2xl flex flex-col items-center text-center">
-        <h2 className="text-xs sm:text-sm font-bold text-slate-100 mb-3 flex items-center gap-2">
+      <div className="w-full max-w-lg max-h-[92dvh] overflow-y-auto bg-[#140e09] border-4 border-[#78593a] rounded-xl p-4 sm:p-5 shadow-2xl flex flex-col items-center text-center">
+        <h2 className="text-xs sm:text-sm font-bold text-amber-300 font-cinzel mb-3 flex items-center gap-2 tracking-wider">
           <span>⏸️</span>
-          <span>GAME PAUSED &amp; SETTINGS</span>
+          <span>CHRONICLE PAUSED &amp; SETTINGS</span>
         </h2>
 
         {engine && engine.player.exclusiveBuffs.length > 0 && (
           <div className="w-full mb-3.5 text-left">
-            <div className="text-[9px] text-emerald-400 font-bold mb-1.5">
-              ACTIVE EXCLUSIVE BUFFS
+            <div className="text-[9px] text-amber-300 font-bold font-cinzel mb-1.5">
+              ACTIVE ENCHANTMENTS &amp; BLESSINGS
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {engine.player.exclusiveBuffs.map(buff => (
                 <div
                   key={buff.id}
-                  className="bg-emerald-950/25 border border-emerald-600/60 rounded-lg p-2.5"
+                  className="bg-[#1e130c] border border-[#573922] rounded-lg p-2.5"
                 >
                   <div className="flex items-center gap-1.5 mb-0.5">
                     <span className="text-sm">{buff.icon}</span>
-                    <span className="text-[9px] font-bold text-emerald-200">{buff.name}</span>
+                    <span className="text-[9px] font-bold text-amber-200 font-cinzel">{buff.name}</span>
                   </div>
-                  <p className="text-xs font-vt text-slate-300 leading-tight">{buff.description}</p>
+                  <p className="text-xs font-vt text-amber-100/80 leading-tight">{buff.description}</p>
                 </div>
               ))}
             </div>
@@ -60,10 +60,10 @@ export const PauseModal: React.FC<PauseModalProps> = ({
           <button
             type="button"
             onClick={onResume}
-            className="sm:col-span-2 w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-lg text-xs flex items-center justify-center gap-2 cursor-pointer shadow-md active:scale-95 transition-all"
+            className="sm:col-span-2 w-full py-3 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-amber-100 font-bold rounded-lg text-xs flex items-center justify-center gap-2 cursor-pointer shadow-lg active:scale-95 transition-all font-cinzel border border-amber-300"
           >
             <Play className="w-4 h-4 fill-current" />
-            <span>RESUME</span>
+            <span>RESUME TRIAL</span>
           </button>
 
           {/* Hide PC Keybind Labels Setting Toggle */}
@@ -75,23 +75,23 @@ export const PauseModal: React.FC<PauseModalProps> = ({
             }}
             className={`sm:col-span-2 w-full py-2.5 px-3 rounded-lg border text-[10px] flex items-center justify-between gap-2 cursor-pointer transition-colors ${
               hidePcKeyLabels
-                ? 'bg-emerald-950/40 hover:bg-emerald-950/60 border-emerald-500/80 text-emerald-200'
-                : 'bg-slate-900 hover:bg-slate-800 border-slate-700 text-slate-200'
+                ? 'bg-amber-950/40 hover:bg-amber-950/60 border-amber-500/80 text-amber-200'
+                : 'bg-[#241710] hover:bg-[#342217] border-[#78593a] text-amber-200'
             }`}
           >
             <div className="flex items-center gap-2 min-w-0">
               {hidePcKeyLabels ? (
-                <Smartphone className="w-4 h-4 text-emerald-400 shrink-0" />
+                <Smartphone className="w-4 h-4 text-amber-400 shrink-0" />
               ) : (
-                <Keyboard className="w-4 h-4 text-sky-400 shrink-0" />
+                <Keyboard className="w-4 h-4 text-amber-400 shrink-0" />
               )}
-              <span className="truncate">HIDE PC KEYS ([Space], [E], [R])</span>
+              <span className="truncate">HIDE PC SPELL KEYS ([Space], [E], [R])</span>
             </div>
             <span
-              className={`px-2 py-0.5 rounded text-[8px] font-bold shrink-0 ${
+              className={`px-2 py-0.5 rounded text-[8px] font-bold shrink-0 font-cinzel ${
                 hidePcKeyLabels
-                  ? 'bg-emerald-400 text-slate-950'
-                  : 'bg-slate-800 text-slate-400'
+                  ? 'bg-amber-400 text-slate-950'
+                  : 'bg-[#18110b] text-amber-500/60'
               }`}
             >
               {hidePcKeyLabels ? 'HIDDEN' : 'SHOWN'}
@@ -104,7 +104,7 @@ export const PauseModal: React.FC<PauseModalProps> = ({
               sounds.toggleMute();
               setRefresh(r => r + 1);
             }}
-            className="w-full py-2.5 px-3 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 rounded-lg text-[10px] flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap"
+            className="w-full py-2.5 px-3 bg-[#241710] hover:bg-[#342217] text-amber-200 border border-[#78593a] rounded-lg text-[10px] flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap"
           >
             {sounds.enabled ? <Volume2 className="w-4 h-4 text-emerald-400 shrink-0" /> : <VolumeX className="w-4 h-4 text-rose-400 shrink-0" />}
             <span>AUDIO: {sounds.enabled ? 'ON' : 'MUTED'}</span>
@@ -115,22 +115,22 @@ export const PauseModal: React.FC<PauseModalProps> = ({
           <button
             type="button"
             onClick={onOpenSkillTree}
-            className="w-full py-2.5 px-3 bg-purple-900/80 hover:bg-purple-800 text-purple-200 border border-purple-600 rounded-lg text-[10px] flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap"
+            className="w-full py-2.5 px-3 bg-gradient-to-r from-purple-900 to-indigo-950 hover:from-purple-800 hover:to-indigo-900 text-purple-200 border border-purple-500/80 rounded-lg text-[10px] flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap font-cinzel"
           >
-            <Sparkles className="w-4 h-4 text-purple-300 shrink-0" />
-            <span>TALENT TREE</span>
+            <Sparkles className="w-3.5 h-3.5 text-purple-300 shrink-0" />
+            <span>TALENT GRIMOIRE</span>
           </button>
 
           <button
             type="button"
             onClick={onReturnToLobby}
-            className="w-full py-2.5 px-3 bg-slate-900 hover:bg-slate-800 text-slate-400 border border-slate-800 rounded-lg text-[10px] flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap"
+            className="w-full py-2.5 px-3 bg-[#241710] hover:bg-[#342217] text-amber-200 border border-[#78593a] rounded-lg text-[10px] flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap font-cinzel"
           >
-            <Home className="w-4 h-4 shrink-0" />
+            <Home className="w-3.5 h-3.5 shrink-0" />
             <span>
               {engine && engine.getKillRewardPreview(false).killGems > 0
-                ? `LOBBY (+${engine.getKillRewardPreview(false).killGems} GEMS)`
-                : 'LOBBY'}
+                ? `GUILD HALL (+${engine.getKillRewardPreview(false).killGems} GEMS)`
+                : 'GUILD HALL'}
             </span>
           </button>
 

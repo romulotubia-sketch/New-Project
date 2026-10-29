@@ -33,34 +33,34 @@ export const PortalConfirmModal: React.FC<PortalConfirmModalProps> = props => {
 
   if (props.mode === 'dungeon') {
     const isFinalFloor = props.currentFloor >= 3;
-    const nextBiome = props.currentFloor === 1 ? 'Crypt' : 'Volcano';
+    const nextBiome = props.currentFloor === 1 ? 'Ancient Crypt' : 'Infernal Caldera';
 
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-3 font-pixel select-none">
-        <div className="w-full max-w-md max-h-[92dvh] overflow-y-auto bg-slate-950 border-2 border-purple-500 rounded-xl p-4 sm:p-5 shadow-2xl">
+        <div className="w-full max-w-md max-h-[92dvh] overflow-y-auto bg-[#140e09] border-2 border-[#b45309] rounded-xl p-4 sm:p-5 shadow-2xl">
           <div className="flex items-start justify-between gap-3 mb-3">
             <div>
-              <h2 className="text-xs sm:text-sm font-bold text-purple-300">
-                {isFinalFloor ? 'ENTER VICTORY PORTAL?' : 'ENTER NEXT FLOOR PORTAL?'}
+              <h2 className="text-xs sm:text-sm font-bold text-amber-300 font-cinzel tracking-wider">
+                {isFinalFloor ? 'STEP INTO REALM VICTORY PORTAL?' : 'STEP INTO THE LOWER CATACOMBS?'}
               </h2>
-              <p className="text-sm sm:text-base font-vt text-slate-300 mt-1 leading-snug">
+              <p className="text-sm sm:text-base font-vt text-amber-100/90 mt-1 leading-snug">
                 {isFinalFloor
-                  ? 'Step through the Magic Stone Portal to complete your run and claim your Victory Bounty!'
-                  : `Advance to Floor ${props.currentFloor + 1} (${nextBiome})? Make sure you have collected all loot in this room first.`}
+                  ? 'Step through the Ancient Archway to seal the Magic Core and claim your Victory Bounty!'
+                  : `Descend to Depth ${props.currentFloor + 1} (${nextBiome})? Ensure all relics and treasure chests have been claimed.`}
               </p>
             </div>
             <button
               type="button"
               onClick={props.onCancel}
-              className="p-1.5 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 rounded cursor-pointer min-w-[34px] min-h-[34px] flex items-center justify-center shrink-0"
+              className="p-1.5 bg-[#241710] hover:bg-[#342217] text-amber-200 border border-[#78593a] rounded cursor-pointer min-w-[34px] min-h-[34px] flex items-center justify-center shrink-0"
               title="Cancel"
             >
               <X className="w-4 h-4" />
             </button>
           </div>
 
-          <div className="bg-slate-900/90 border border-slate-800 rounded-lg px-3 py-2.5 mb-4 flex items-center justify-between text-xs font-vt tabular-nums">
-            <span className="text-slate-400">Active Difficulty</span>
+          <div className="bg-[#1d120a] border border-[#573922] rounded-lg px-3 py-2.5 mb-4 flex items-center justify-between text-xs font-vt tabular-nums">
+            <span className="text-amber-300/70 font-cinzel text-[10px]">Active Trial</span>
             <span className="text-amber-300 font-bold">
               {diffCfg.name.toUpperCase()} · {diffCfg.gemMult.toFixed(1)}x Gems · {diffCfg.goldMult.toFixed(1)}x Gold
             </span>
@@ -70,17 +70,17 @@ export const PortalConfirmModal: React.FC<PortalConfirmModalProps> = props => {
             <button
               type="button"
               onClick={props.onCancel}
-              className="py-2.5 px-3 bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 rounded-lg text-[10px] font-bold cursor-pointer min-h-[40px] whitespace-nowrap"
+              className="py-2.5 px-3 bg-[#241710] hover:bg-[#342217] text-amber-200 border border-[#78593a] rounded-lg text-[10px] font-bold cursor-pointer min-h-[40px] whitespace-nowrap font-cinzel"
             >
               STAY HERE
             </button>
             <button
               type="button"
               onClick={props.onConfirm}
-              className="py-2.5 px-3 bg-purple-600 hover:bg-purple-500 text-white border border-purple-300 rounded-lg text-[10px] font-bold flex items-center justify-center gap-1.5 cursor-pointer min-h-[40px] whitespace-nowrap"
+              className="py-2.5 px-3 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-amber-100 border border-amber-300 rounded-lg text-[10px] font-bold flex items-center justify-center gap-1.5 cursor-pointer min-h-[40px] whitespace-nowrap font-cinzel shadow-md"
             >
               <Check className="w-3.5 h-3.5 shrink-0" />
-              <span>{isFinalFloor ? 'CLAIM VICTORY' : 'ENTER PORTAL'}</span>
+              <span>{isFinalFloor ? 'CLAIM VICTORY' : 'ENTER DEPTHS'}</span>
             </button>
           </div>
         </div>
@@ -92,19 +92,19 @@ export const PortalConfirmModal: React.FC<PortalConfirmModalProps> = props => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-3 font-pixel select-none">
-      <div className="w-full max-w-lg max-h-[94dvh] overflow-y-auto bg-slate-950 border-2 border-purple-500 rounded-xl p-4 sm:p-5 shadow-2xl">
+      <div className="w-full max-w-lg max-h-[94dvh] overflow-y-auto bg-[#140e09] border-2 border-[#b45309] rounded-xl p-4 sm:p-5 shadow-2xl">
         <div className="flex items-start justify-between gap-3 mb-3">
           <div>
-            <h2 className="text-xs sm:text-sm font-bold text-purple-300">ENTER DUNGEON PORTAL?</h2>
-            <p className="text-sm sm:text-base font-vt text-slate-300 mt-0.5 leading-snug">
-              Confirm your difficulty and embark into the dungeon as{' '}
+            <h2 className="text-xs sm:text-sm font-bold text-amber-300 font-cinzel tracking-wider">ENTER DUNGEON PORTAL?</h2>
+            <p className="text-sm sm:text-base font-vt text-amber-100/90 mt-0.5 leading-snug">
+              Confirm your trial difficulty and embark into the catacombs as{' '}
               <span className="text-amber-300 font-bold">{hero.name}</span>.
             </p>
           </div>
           <button
             type="button"
             onClick={props.onCancel}
-            className="p-1.5 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 rounded cursor-pointer min-w-[34px] min-h-[34px] flex items-center justify-center shrink-0"
+            className="p-1.5 bg-[#241710] hover:bg-[#342217] text-amber-200 border border-[#78593a] rounded cursor-pointer min-w-[34px] min-h-[34px] flex items-center justify-center shrink-0"
             title="Cancel"
           >
             <X className="w-4 h-4" />
@@ -112,17 +112,17 @@ export const PortalConfirmModal: React.FC<PortalConfirmModalProps> = props => {
         </div>
 
         {/* Chosen Hero & Equipped Skills Summary */}
-        <div className="bg-slate-900/80 border border-slate-800 rounded-lg px-3 py-2.5 mb-3.5 flex items-center justify-between gap-2">
+        <div className="bg-[#1d120a] border border-[#573922] rounded-lg px-3 py-2.5 mb-3.5 flex items-center justify-between gap-2">
           <div>
-            <div className="text-[9px] text-amber-300 font-bold">{hero.name.toUpperCase()}</div>
-            <div className="text-xs font-vt text-slate-400">{hero.title}</div>
+            <div className="text-[9px] text-amber-300 font-bold font-cinzel">{hero.name.toUpperCase()}</div>
+            <div className="text-xs font-vt text-amber-200/70">{hero.title}</div>
           </div>
           <div className="flex items-center gap-1.5">
             {props.skills.map((s, idx) => (
               <div
                 key={`${s.id}_${idx}`}
-                className={`w-9 h-9 rounded-lg border flex items-center justify-center text-lg bg-slate-950 ${
-                  s.isUltimate ? 'border-amber-400/90' : 'border-sky-500/80'
+                className={`w-9 h-9 rounded-lg border flex items-center justify-center text-lg bg-[#140e09] ${
+                  s.isUltimate ? 'border-amber-400/90' : 'border-indigo-500/80'
                 }`}
                 title={s.name}
               >
@@ -135,11 +135,11 @@ export const PortalConfirmModal: React.FC<PortalConfirmModalProps> = props => {
         {/* Difficulty Selector (Easy -> Hell, Default Medium) */}
         <div className="mb-4">
           <div className="flex items-center justify-between mb-1.5">
-            <span className="text-[9px] font-bold text-slate-300 flex items-center gap-1.5">
+            <span className="text-[9px] font-bold text-amber-200 flex items-center gap-1.5 font-cinzel">
               <Swords className="w-3.5 h-3.5 text-amber-400" />
-              <span>SELECT DIFFICULTY</span>
+              <span>SELECT TRIAL</span>
             </span>
-            <span className="text-xs font-vt text-purple-300">Higher difficulty = More rewards</span>
+            <span className="text-xs font-vt text-amber-300">Greater trials = Grander spoils</span>
           </div>
 
           <div className="grid grid-cols-5 gap-1.5 mb-2.5">
@@ -151,18 +151,18 @@ export const PortalConfirmModal: React.FC<PortalConfirmModalProps> = props => {
                   key={dId}
                   type="button"
                   onClick={() => props.onSelectDifficulty(dId)}
-                  className={`py-2 px-1 rounded-lg border text-[8px] sm:text-[9px] font-bold cursor-pointer transition-colors min-h-[38px] text-center whitespace-nowrap ${
+                  className={`py-2 px-1 rounded-lg border text-[8px] sm:text-[9px] font-bold cursor-pointer transition-colors min-h-[38px] text-center whitespace-nowrap font-cinzel ${
                     isSelected
                       ? dId === 'hell'
-                        ? 'bg-rose-600 text-white border-rose-300'
+                        ? 'bg-rose-700 text-white border-rose-300 shadow-md'
                         : dId === 'nightmare'
-                        ? 'bg-purple-600 text-white border-purple-300'
+                        ? 'bg-purple-700 text-white border-purple-300 shadow-md'
                         : dId === 'hard'
-                        ? 'bg-amber-500 text-slate-950 border-amber-200'
+                        ? 'bg-amber-600 text-slate-950 border-amber-200 shadow-md'
                         : dId === 'easy'
-                        ? 'bg-emerald-500 text-slate-950 border-emerald-200'
-                        : 'bg-sky-500 text-slate-950 border-sky-200'
-                      : 'bg-slate-900 hover:bg-slate-800 text-slate-300 border-slate-800'
+                        ? 'bg-emerald-600 text-slate-950 border-emerald-200 shadow-md'
+                        : 'bg-amber-500 text-slate-950 border-amber-200 shadow-md'
+                      : 'bg-[#1e130c] hover:bg-[#2c1c11] text-amber-200/80 border-[#573922]'
                   }`}
                 >
                   {cfg.name.toUpperCase()}
@@ -171,22 +171,22 @@ export const PortalConfirmModal: React.FC<PortalConfirmModalProps> = props => {
             })}
           </div>
 
-          <div className="bg-slate-900/90 border border-slate-800 rounded-lg p-3 space-y-1.5 tabular-nums">
+          <div className="bg-[#1d120a] border border-[#573922] rounded-lg p-3 space-y-1.5 tabular-nums">
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold text-white">{diffCfg.name.toUpperCase()} MODE</span>
+              <span className="text-[10px] font-bold text-amber-200 font-cinzel">{diffCfg.name.toUpperCase()} TRIAL</span>
               {diffCfg.id === 'medium' && (
-                <span className="text-xs font-vt text-sky-300">Standard Baseline</span>
+                <span className="text-xs font-vt text-amber-300">Standard Baseline</span>
               )}
             </div>
-            <p className="text-sm font-vt text-slate-300 leading-tight">{diffCfg.tagline}</p>
-            <div className="flex flex-wrap items-center justify-between gap-2 pt-1.5 border-t border-slate-800 text-xs font-vt">
-              <span className="text-rose-300">
-                Enemy HP {Math.round(diffCfg.enemyHpMult * 100)}% · DMG {Math.round(diffCfg.enemyDamageMult * 100)}%
+            <p className="text-sm font-vt text-amber-100/80 leading-tight">{diffCfg.tagline}</p>
+            <div className="flex flex-wrap items-center justify-between gap-2 pt-1.5 border-t border-[#3d2314] text-xs font-vt">
+              <span className="text-rose-400">
+                Foe Vitality {Math.round(diffCfg.enemyHpMult * 100)}% · Strike DMG {Math.round(diffCfg.enemyDamageMult * 100)}%
               </span>
-              <span className="text-purple-300 font-bold flex items-center gap-1">
+              <span className="text-amber-300 font-bold flex items-center gap-1">
                 <Sparkles className="w-3 h-3 shrink-0" />
                 <span>
-                  Gems {diffCfg.gemMult.toFixed(1)}x · Gold {diffCfg.goldMult.toFixed(1)}x · Win +{diffCfg.victoryGemBonus}G
+                  Gems {diffCfg.gemMult.toFixed(1)}x · Gold {diffCfg.goldMult.toFixed(1)}x · Victory +{diffCfg.victoryGemBonus}G
                 </span>
               </span>
             </div>
@@ -198,14 +198,14 @@ export const PortalConfirmModal: React.FC<PortalConfirmModalProps> = props => {
           <button
             type="button"
             onClick={props.onCancel}
-            className="py-2.5 px-3 bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 rounded-lg text-[10px] font-bold cursor-pointer min-h-[42px] whitespace-nowrap"
+            className="py-2.5 px-3 bg-[#241710] hover:bg-[#342217] text-amber-200 border border-[#78593a] rounded-lg text-[10px] font-bold cursor-pointer min-h-[42px] whitespace-nowrap font-cinzel"
           >
             CANCEL
           </button>
           <button
             type="button"
             onClick={props.onConfirm}
-            className="py-2.5 px-3 bg-purple-600 hover:bg-purple-500 text-white border border-purple-300 rounded-lg text-[10px] font-bold flex items-center justify-center gap-1.5 cursor-pointer min-h-[42px] whitespace-nowrap"
+            className="py-2.5 px-3 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-amber-100 border border-amber-300 rounded-lg text-[10px] font-bold flex items-center justify-center gap-1.5 cursor-pointer min-h-[42px] whitespace-nowrap font-cinzel shadow-lg"
           >
             <Check className="w-4 h-4 shrink-0" />
             <span>ENTER DUNGEON</span>

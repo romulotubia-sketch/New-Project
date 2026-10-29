@@ -708,11 +708,15 @@ export class HouseLobbyEngine {
     // 5. Walk-To-Point Indicator Ring
     if (this.walkTarget && this.pickedClass) {
       ctx.save();
-      ctx.strokeStyle = 'rgba(56, 189, 248, 0.65)';
+      ctx.strokeStyle = 'rgba(251, 191, 36, 0.75)';
+      ctx.shadowColor = '#f59e0b';
+      ctx.shadowBlur = 6;
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.arc(this.walkTarget.x, this.walkTarget.y, 9 + Math.sin(t * 3) * 2, 0, Math.PI * 2);
       ctx.stroke();
+      ctx.fillStyle = '#fef08a';
+      ctx.fillRect(this.walkTarget.x - 1, this.walkTarget.y - 1, 2, 2);
       ctx.restore();
     }
 

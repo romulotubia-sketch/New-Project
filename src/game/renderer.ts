@@ -91,11 +91,13 @@ export class GameRenderer {
       });
     });
 
-    // 7. Auto-Target Laser Tracer to locked enemy
+    // 7. Ethereal Guiding Arcane Tether to locked enemy
     if (currentTarget && currentTarget.hp > 0) {
       ctx.save();
-      ctx.strokeStyle = player.facingRight || !player.facingRight ? 'rgba(239, 68, 68, 0.36)' : 'rgba(239, 68, 68, 0.36)';
-      ctx.setLineDash([5, 6]);
+      ctx.strokeStyle = 'rgba(251, 191, 36, 0.4)';
+      ctx.shadowColor = '#f59e0b';
+      ctx.shadowBlur = 6;
+      ctx.setLineDash([4, 6]);
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.moveTo(player.x, player.y);
@@ -855,37 +857,89 @@ export class GameRenderer {
 
   private static drawDoors(ctx: CanvasRenderingContext2D, room: DungeonRoom) {
     const halfW = PASSAGE_HALF_WIDTH;
+    const t = Date.now() * 0.004;
+
     room.doors.forEach(door => {
       const isLocked = !room.isCleared && room.combatStarted;
       ctx.save();
 
       if (isLocked) {
-        // Red laser/iron combat gate bars sealing the doorway
-        ctx.fillStyle = '#ef4444';
-        ctx.shadowColor = '#ef4444';
-        ctx.shadowBlur = 10;
-        if (door.direction === 'north' || door.direction === 'south') {
-          ctx.fillRect(door.x - halfW, door.y - 5, halfW * 2, 10);
-          ctx.fillStyle = '#fecaca';
-          ctx.fillRect(door.x - halfW + 2, door.y - 1.5, halfW * 2 - 4, 3);
+        // Ancient Runic Iron Portcullis sealing the doorway during combat
+        const isHoriz = door.direction === 'north' || door.direction === 'south';
+
+        // Outer heavy iron frame
+        ctx.fillStyle = '#1e2330';
+        if (isHoriz) {
+          ctx.fillRect(door.x - halfW - 2, door.y - 7, halfW * 2 + 4, 14);
+          ctx.fillStyle = '#334155';
+          ctx.fillRect(door.x - halfW, door.y - 6, halfW * 2, 2);
+          ctx.fillRect(door.x - halfW, door.y + 4, halfW * 2, 2);
+
+          // Forged vertical iron bars with spiked tips
+          for (let bx = door.x - halfW + 6; bx < door.x + halfW - 4; bx += 8) {
+            ctx.fillStyle = '#475569';
+            ctx.fillRect(bx, door.y - 7, 3, 14);
+            ctx.fillStyle = '#94a3b8';
+            ctx.fillRect(bx + 1, door.y - 7, 1, 14);
+          }
         } else {
-          ctx.fillRect(door.x - 5, door.y - halfW, 10, halfW * 2);
-          ctx.fillStyle = '#fecaca';
-          ctx.fillRect(door.x - 1.5, door.y - halfW + 2, 3, halfW * 2 - 4);
+          ctx.fillRect(door.x - 7, door.y - halfW - 2, 14, halfW * 2 + 4);
+          ctx.fillStyle = '#334155';
+          ctx.fillRect(door.x - 6, door.y - halfW, 2, halfW * 2);
+          ctx.fillRect(door.x + 4, door.y - halfW, 2, halfW * 2);
+
+          // Forged horizontal iron bars
+          for (let by = door.y - halfW + 6; by < door.y + halfW - 4; by += 8) {
+            ctx.fillStyle = '#475569';
+            ctx.fillRect(door.x - 7, by, 14, 3);
+            ctx.fillStyle = '#94a3b8';
+            ctx.fillRect(door.x - 7, by + 1, 14, 1);
+          }
         }
+
+        // Glowing Ancient Arcane Ward Sigil binding the gate shut
+        const pulse = 0.55 + Math.sin(t * 3) * 0.25;
+        ctx.strokeStyle = `rgba(245, 158, 11, ${pulse})`;
+        ctx.shadowColor = '#f59e0b';
+        ctx.shadowBlur = 10;
+        ctx.lineWidth = 2;
+
+        ctx.beginPath();
+        ctx.arc(door.x, door.y, 8, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.fillStyle = '#fbbf24';
+        ctx.fillRect(door.x - 2, door.y - 2, 4, 4);
       } else {
-        // Carved stone door jambs + glowing cyan threshold
-        ctx.fillStyle = '#64748b';
+        // Carved stone door jambs with ancient glowing rune threshold
+        ctx.fillStyle = '#475569';
         if (door.direction === 'north' || door.direction === 'south') {
           ctx.fillRect(door.x - halfW - 4, door.y - 8, 6, 16);
           ctx.fillRect(door.x + halfW - 2, door.y - 8, 6, 16);
-          ctx.fillStyle = 'rgba(56, 189, 248, 0.45)';
+          ctx.fillStyle = '#64748b';
+          ctx.fillRect(door.x - halfW - 3, door.y - 7, 4, 14);
+          ctx.fillRect(door.x + halfW - 1, door.y - 7, 4, 14);
+
+          // Amber-gold rune threshold inlay
+          ctx.fillStyle = 'rgba(245, 158, 11, 0.35)';
           ctx.fillRect(door.x - halfW + 4, door.y - 2, halfW * 2 - 8, 4);
+          ctx.fillStyle = 'rgba(251, 191, 36, 0.6)';
+          for (let rx = door.x - halfW + 8; rx < door.x + halfW - 8; rx += 12) {
+            ctx.fillRect(rx, door.y - 1, 3, 2);
+          }
         } else {
           ctx.fillRect(door.x - 8, door.y - halfW - 4, 16, 6);
           ctx.fillRect(door.x - 8, door.y + halfW - 2, 16, 6);
-          ctx.fillStyle = 'rgba(56, 189, 248, 0.45)';
+          ctx.fillStyle = '#64748b';
+          ctx.fillRect(door.x - 7, door.y - halfW - 3, 14, 4);
+          ctx.fillRect(door.x - 7, door.y + halfW - 1, 14, 4);
+
+          ctx.fillStyle = 'rgba(245, 158, 11, 0.35)';
           ctx.fillRect(door.x - 2, door.y - halfW + 4, 4, halfW * 2 - 8);
+          ctx.fillStyle = 'rgba(251, 191, 36, 0.6)';
+          for (let ry = door.y - halfW + 8; ry < door.y + halfW - 8; ry += 12) {
+            ctx.fillRect(door.x - 1, ry, 2, 3);
+          }
         }
       }
       ctx.restore();
@@ -1668,21 +1722,51 @@ export class GameRenderer {
   private static drawSummonedEntities(ctx: CanvasRenderingContext2D, effects: ActiveSkillEffects) {
     if (!effects) return;
 
-    // 1. Deployable Turrets (Standard & Engineer Vulcan)
+    // 1. Deployable Dwarven Clockwork Ballistas & Rune Pylons
     effects.turrets.forEach(turret => {
       ctx.save();
-      ctx.fillStyle = turret.isVulcan ? '#7c2d12' : '#334155';
-      ctx.fillRect(turret.x - 12, turret.y - 12, 24, 24);
-      ctx.fillStyle = turret.isVulcan ? '#f97316' : '#06b6d4';
+      const t = Date.now() * 0.005;
+      // Carved stone & timber foundation pedestal
+      ctx.fillStyle = turret.isVulcan ? '#451a03' : '#1e293b';
+      ctx.fillRect(turret.x - 12, turret.y - 10, 24, 22);
+      ctx.fillStyle = turret.isVulcan ? '#78350f' : '#334155';
+      ctx.fillRect(turret.x - 10, turret.y - 8, 20, 18);
+
+      // Bronze / Iron gear trim
+      ctx.strokeStyle = turret.isVulcan ? '#f59e0b' : '#38bdf8';
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(turret.x - 12, turret.y - 10, 24, 22);
+
+      // Clockwork Arbalest bow arms & glowing spell crystal core
       if (turret.isVulcan) {
-        ctx.fillRect(turret.x - 8, turret.y - 18, 5, 9);
-        ctx.fillRect(turret.x + 3, turret.y - 18, 5, 9);
+        // Twin fire-arbalest arms
+        ctx.fillStyle = '#b45309';
+        ctx.fillRect(turret.x - 14, turret.y - 14, 28, 4);
+        ctx.fillStyle = '#ef4444';
+        ctx.fillRect(turret.x - 7, turret.y - 18, 4, 8);
+        ctx.fillRect(turret.x + 3, turret.y - 18, 4, 8);
+        // Fire mana core
+        ctx.fillStyle = '#fbbf24';
+        ctx.beginPath();
+        ctx.arc(turret.x, turret.y - 1, 4, 0, Math.PI * 2);
+        ctx.fill();
       } else {
-        ctx.fillRect(turret.x - 6, turret.y - 16, 12, 8);
+        // Levitating mana crystal pylon
+        const lev = Math.sin(t * 3) * 2;
+        ctx.fillStyle = '#0284c7';
+        ctx.fillRect(turret.x - 8, turret.y - 14, 16, 4);
+        // Azure arcane crystal
+        ctx.fillStyle = '#38bdf8';
+        ctx.shadowColor = '#0ea5e9';
+        ctx.shadowBlur = 8;
+        ctx.beginPath();
+        ctx.moveTo(turret.x, turret.y - 20 + lev);
+        ctx.lineTo(turret.x + 5, turret.y - 14 + lev);
+        ctx.lineTo(turret.x, turret.y - 8 + lev);
+        ctx.lineTo(turret.x - 5, turret.y - 14 + lev);
+        ctx.closePath();
+        ctx.fill();
       }
-      ctx.strokeStyle = turret.isVulcan ? '#fbbf24' : '#38bdf8';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(turret.x - 12, turret.y - 12, 24, 24);
       ctx.restore();
     });
 
@@ -1776,29 +1860,40 @@ export class GameRenderer {
       ctx.restore();
     });
 
-    // 4. Alchemist Mecha-Golem Titan
+    // 4. Ancient Runic Stone Colossus (Alchemist Golem Titan)
     effects.mechaGolems.forEach(golem => {
       ctx.save();
-      // Heavy chassis
+      // Chiseled Granite Torso
       ctx.fillStyle = '#334155';
-      ctx.fillRect(golem.x - 20, golem.y - 18, 40, 36);
+      ctx.fillRect(golem.x - 22, golem.y - 20, 44, 38);
+      ctx.fillStyle = '#475569';
+      ctx.fillRect(golem.x - 16, golem.y - 14, 32, 26);
+
+      // Etched glowing elemental runes on stone chest
       ctx.fillStyle = '#f59e0b';
-      ctx.fillRect(golem.x - 14, golem.y - 12, 28, 22);
-      // Glowing Mecha Visor
-      ctx.fillStyle = '#0f172a';
-      ctx.fillRect(golem.x - 10, golem.y - 24, 20, 10);
-      ctx.fillStyle = '#ef4444';
-      ctx.fillRect(golem.x - 7, golem.y - 21, 14, 4);
-      // Twin arm cannons
-      ctx.fillStyle = '#64748b';
-      ctx.fillRect(golem.x - 26, golem.y - 6, 6, 16);
-      ctx.fillRect(golem.x + 20, golem.y - 6, 6, 16);
+      ctx.shadowColor = '#f59e0b';
+      ctx.shadowBlur = 10;
+      ctx.fillRect(golem.x - 3, golem.y - 8, 6, 14);
+      ctx.fillRect(golem.x - 10, golem.y - 4, 20, 5);
+
+      // Stone head & glowing eyes
+      ctx.fillStyle = '#1e293b';
+      ctx.fillRect(golem.x - 10, golem.y - 28, 20, 10);
+      ctx.fillStyle = '#fde047';
+      ctx.fillRect(golem.x - 6, golem.y - 24, 4, 3);
+      ctx.fillRect(golem.x + 2, golem.y - 24, 4, 3);
+
+      // Massive stone fists
+      ctx.fillStyle = '#1e293b';
+      ctx.fillRect(golem.x - 28, golem.y - 6, 8, 18);
+      ctx.fillRect(golem.x + 20, golem.y - 6, 8, 18);
+
       // HP Bar
       const hpRatio = Math.max(0, golem.hp / golem.maxHp);
       ctx.fillStyle = '#0f172a';
-      ctx.fillRect(golem.x - 20, golem.y - 32, 40, 4);
-      ctx.fillStyle = '#22c55e';
-      ctx.fillRect(golem.x - 20, golem.y - 32, 40 * hpRatio, 4);
+      ctx.fillRect(golem.x - 20, golem.y - 36, 40, 4);
+      ctx.fillStyle = '#eab308';
+      ctx.fillRect(golem.x - 20, golem.y - 36, 40 * hpRatio, 4);
       ctx.restore();
     });
   }
@@ -2121,8 +2216,9 @@ export class GameRenderer {
       const bw = (boundSize + pulse) * 2;
       const bh = (boundSize + pulse) * 2;
 
-      ctx.strokeStyle = '#ef4444';
-      ctx.shadowColor = '#ef4444';
+      // Arcane Gold/Crimson Runic Target Flourishes
+      ctx.strokeStyle = '#f59e0b';
+      ctx.shadowColor = '#d97706';
       ctx.shadowBlur = 8;
       ctx.lineWidth = 2;
 
@@ -2150,19 +2246,20 @@ export class GameRenderer {
       ctx.lineTo(bx + bw, by + bh - bracketLen);
       ctx.stroke();
 
-      ctx.fillStyle = '#ef4444';
+      // Cardinal Runic Diamond Marks
+      ctx.fillStyle = '#fbbf24';
       ctx.beginPath();
-      ctx.moveTo(enemy.x, ey - 3);
-      ctx.lineTo(enemy.x + 3, ey);
-      ctx.lineTo(enemy.x, ey + 3);
-      ctx.lineTo(enemy.x - 3, ey);
+      ctx.moveTo(enemy.x, ey - boundSize - pulse - 3);
+      ctx.lineTo(enemy.x + 3, ey - boundSize - pulse);
+      ctx.lineTo(enemy.x, ey - boundSize - pulse + 3);
+      ctx.lineTo(enemy.x - 3, ey - boundSize - pulse);
       ctx.closePath();
       ctx.fill();
 
       ctx.font = '7px "Press Start 2P", monospace';
-      ctx.fillStyle = '#f87171';
+      ctx.fillStyle = '#fef08a';
       ctx.textAlign = 'center';
-      ctx.fillText('TARGET', enemy.x, by - 6);
+      ctx.fillText('AIM', enemy.x, by - 6);
     }
 
     ctx.restore();
@@ -2288,14 +2385,16 @@ export class GameRenderer {
     const my = pos.y;
 
     if (isLocked) {
-      ctx.strokeStyle = '#ef4444';
-      ctx.shadowColor = '#ef4444';
+      // Rotating Arcane Runic Spell Focus Reticle
+      ctx.strokeStyle = '#f59e0b';
+      ctx.shadowColor = '#d97706';
       ctx.shadowBlur = 8;
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 1.5;
 
-      const size = 12;
-      const gap = 4;
+      const size = 11;
+      const gap = 3;
 
+      // Cardinal Runic Rays
       ctx.beginPath();
       ctx.moveTo(mx, my - gap);
       ctx.lineTo(mx, my - gap - size);
@@ -2307,36 +2406,44 @@ export class GameRenderer {
       ctx.lineTo(mx + gap + size, my);
       ctx.stroke();
 
+      // Rotating Inscribed Diamond Runic Ring
       const angle = Date.now() * 0.003;
       ctx.save();
       ctx.translate(mx, my);
       ctx.rotate(angle);
-      ctx.strokeRect(-9, -9, 18, 18);
+      ctx.strokeStyle = 'rgba(251, 191, 36, 0.75)';
+      ctx.strokeRect(-8, -8, 16, 16);
+      ctx.beginPath();
+      ctx.arc(0, 0, 11, 0, Math.PI * 2);
+      ctx.stroke();
       ctx.restore();
 
-      ctx.fillStyle = '#f87171';
+      // Ruby Focus Jewel in Center
+      ctx.fillStyle = '#ef4444';
       ctx.beginPath();
       ctx.arc(mx, my, 2.5, 0, Math.PI * 2);
       ctx.fill();
 
       ctx.font = '6px "Press Start 2P", monospace';
-      ctx.fillStyle = '#ef4444';
+      ctx.fillStyle = '#fbbf24';
       ctx.textAlign = 'center';
-      ctx.fillText('AUTO', mx, my + size + 10);
+      ctx.fillText('LOCK', mx, my + size + 11);
     } else {
-      // Sleek Joystick Directional Chevron ahead of the hero
+      // Enchanted Arcane Aiming Arrowhead Wisp
       ctx.translate(mx, my);
       ctx.rotate(aimAngle);
-      ctx.strokeStyle = 'rgba(56, 189, 248, 0.78)';
+      ctx.strokeStyle = 'rgba(245, 158, 11, 0.85)';
+      ctx.shadowColor = '#f59e0b';
+      ctx.shadowBlur = 6;
       ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.moveTo(-5, -6);
-      ctx.lineTo(3, 0);
-      ctx.lineTo(-5, 6);
+      ctx.moveTo(-6, -6);
+      ctx.lineTo(4, 0);
+      ctx.lineTo(-6, 6);
       ctx.stroke();
 
-      ctx.fillStyle = '#bae6fd';
-      ctx.fillRect(-1, -1, 2, 2);
+      ctx.fillStyle = '#fef08a';
+      ctx.fillRect(-1, -1, 3, 2);
     }
 
     ctx.restore();

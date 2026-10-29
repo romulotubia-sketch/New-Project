@@ -6,7 +6,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { GameEngine } from '../game/gameEngine';
 import { useGameSettings } from '../game/settings';
-import { RefreshCw, Hand } from 'lucide-react';
+import { RefreshCw, Hand, Swords } from 'lucide-react';
 
 interface MobileControlsProps {
   engine: GameEngine;
@@ -207,7 +207,7 @@ export const MobileControls: React.FC<MobileControlsProps> = ({ engine }) => {
       }
 
       if (outerRingRef.current) {
-        outerRingRef.current.setAttribute('stroke', engaged ? '#38bdf8' : '#334155');
+        outerRingRef.current.setAttribute('stroke', engaged ? '#f59e0b' : '#78593a');
       }
 
       if (dirDotRef.current) {
@@ -229,15 +229,15 @@ export const MobileControls: React.FC<MobileControlsProps> = ({ engine }) => {
         knobCircleRef.current.setAttribute('cy', (60 + dispY).toFixed(2));
         knobCircleRef.current.setAttribute(
           'fill',
-          engaged ? 'rgba(14, 165, 233, 0.88)' : 'rgba(51, 65, 85, 0.85)'
+          engaged ? 'rgba(180, 83, 9, 0.92)' : 'rgba(42, 27, 18, 0.88)'
         );
-        knobCircleRef.current.setAttribute('stroke', engaged ? '#bae6fd' : '#94a3b8');
+        knobCircleRef.current.setAttribute('stroke', engaged ? '#fef08a' : '#b45309');
       }
 
       if (knobCoreRef.current) {
         knobCoreRef.current.setAttribute('cx', (60 + dispX).toFixed(2));
         knobCoreRef.current.setAttribute('cy', (60 + dispY).toFixed(2));
-        knobCoreRef.current.setAttribute('fill', engaged ? '#e0f2fe' : '#cbd5e1');
+        knobCoreRef.current.setAttribute('fill', engaged ? '#fbbf24' : '#d97706');
       }
 
       rafId = requestAnimationFrame(syncVisuals);
@@ -270,46 +270,46 @@ export const MobileControls: React.FC<MobileControlsProps> = ({ engine }) => {
       <div
         ref={joystickZoneRef}
         className="w-40 h-40 sm:w-44 sm:h-44 -ml-2 -mb-2 pointer-events-auto touch-none cursor-grab active:cursor-grabbing relative flex items-center justify-center game-touch-lock"
-        title={hidePcKeyLabels ? 'Drag Virtual Joystick to move and aim' : 'Drag Virtual Joystick or press WASD to move and aim'}
+        title={hidePcKeyLabels ? 'Drag Celestial Compass to move and cast' : 'Drag Celestial Compass or press WASD to move and cast'}
       >
         <div
           ref={svgWrapRef}
           className="w-28 h-28 lg:w-32 lg:h-32 pointer-events-none will-change-transform -translate-x-1.5 translate-y-1.5"
         >
           <svg viewBox="0 0 120 120" className="w-full h-full overflow-visible">
-            {/* Outer Base Ring */}
+            {/* Outer Base Ring - Antique Runic Astrolabe */}
             <circle
               ref={outerRingRef}
               cx="60"
               cy="60"
               r="52"
-              fill="rgba(15, 23, 42, 0.68)"
-              stroke="#334155"
+              fill="rgba(24, 16, 12, 0.75)"
+              stroke="#78593a"
               strokeWidth="2.5"
             />
-            {/* Inner Guide Crosshair */}
+            {/* Inner Celestial Crosshair */}
             <circle
               cx="60"
               cy="60"
               r="34"
               fill="none"
-              stroke="rgba(148, 163, 184, 0.16)"
+              stroke="rgba(217, 119, 6, 0.28)"
               strokeWidth="1.5"
               strokeDasharray="4 4"
             />
-            <line x1="60" y1="14" x2="60" y2="24" stroke="rgba(148, 163, 184, 0.25)" strokeWidth="1.5" />
-            <line x1="60" y1="96" x2="60" y2="106" stroke="rgba(148, 163, 184, 0.25)" strokeWidth="1.5" />
-            <line x1="14" y1="60" x2="24" y2="60" stroke="rgba(148, 163, 184, 0.25)" strokeWidth="1.5" />
-            <line x1="96" y1="60" x2="106" y2="60" stroke="rgba(148, 163, 184, 0.25)" strokeWidth="1.5" />
+            <line x1="60" y1="14" x2="60" y2="24" stroke="rgba(251, 191, 36, 0.4)" strokeWidth="1.5" />
+            <line x1="60" y1="96" x2="60" y2="106" stroke="rgba(251, 191, 36, 0.4)" strokeWidth="1.5" />
+            <line x1="14" y1="60" x2="24" y2="60" stroke="rgba(251, 191, 36, 0.4)" strokeWidth="1.5" />
+            <line x1="96" y1="60" x2="106" y2="60" stroke="rgba(251, 191, 36, 0.4)" strokeWidth="1.5" />
 
-            {/* Live Facing Direction Indicator Dot on Outer Bezel */}
+            {/* Live Facing Direction Indicator Gem on Outer Rim */}
             <circle
               ref={dirDotRef}
               cx="109"
               cy="60"
               r="4"
-              fill="#38bdf8"
-              stroke="#0f172a"
+              fill="#fbbf24"
+              stroke="#451a03"
               strokeWidth="1.5"
             />
 
@@ -321,19 +321,19 @@ export const MobileControls: React.FC<MobileControlsProps> = ({ engine }) => {
               x2="60"
               y2="60"
               opacity="0"
-              stroke="rgba(56, 189, 248, 0.45)"
+              stroke="rgba(245, 158, 11, 0.65)"
               strokeWidth="4"
               strokeLinecap="round"
             />
 
-            {/* Thumb Stick Knob */}
+            {/* Thumb Stick Knob - Enchanted Stone with Gold Rim */}
             <circle
               ref={knobCircleRef}
               cx="60"
               cy="60"
               r="21"
-              fill="rgba(51, 65, 85, 0.85)"
-              stroke="#94a3b8"
+              fill="rgba(42, 27, 18, 0.88)"
+              stroke="#b45309"
               strokeWidth="2.5"
             />
             <circle
@@ -341,7 +341,7 @@ export const MobileControls: React.FC<MobileControlsProps> = ({ engine }) => {
               cx="60"
               cy="60"
               r="7"
-              fill="#cbd5e1"
+              fill="#d97706"
             />
           </svg>
         </div>
@@ -352,44 +352,91 @@ export const MobileControls: React.FC<MobileControlsProps> = ({ engine }) => {
         {/* Hold-to-Inspect Skill Description Card on Narrow Mobile */}
         {heldSkill && heldSkillIndex !== null && (
           <div
-            className={`w-64 rounded-xl border-2 p-2.5 shadow-2xl bg-slate-950/95 backdrop-blur-md pointer-events-none ${
-              heldSkill.isUltimate ? 'border-amber-400' : 'border-sky-400'
+            className={`w-64 rounded-xl border-2 p-2.5 shadow-2xl bg-[#140e09]/95 border-[#b45309] backdrop-blur-md pointer-events-none ${
+              heldSkill.isUltimate ? 'ring-2 ring-amber-400/50' : ''
             }`}
           >
-            <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center justify-between gap-2 font-cinzel">
               <div className="flex items-center gap-2 min-w-0">
                 <span className="text-lg shrink-0">{heldSkill.icon}</span>
-                <span className="text-[10px] font-bold text-white truncate">{heldSkill.name}</span>
+                <span className="text-[10px] font-bold text-amber-200 truncate tracking-wide">{heldSkill.name}</span>
               </div>
-              <span className="text-[7px] font-bold px-1.5 py-0.5 rounded bg-slate-900 border border-slate-700 text-sky-300 shrink-0 whitespace-nowrap">
+              <span className="text-[7px] font-bold px-1.5 py-0.5 rounded bg-[#2a170d] border border-[#b45309] text-amber-300 shrink-0 whitespace-nowrap">
                 {heldSkill.isUltimate
                   ? hidePcKeyLabels
-                    ? 'ULT'
+                    ? 'ULT SPELL'
                     : 'ULT [R]'
                   : hidePcKeyLabels
-                  ? `SKILL ${heldSkillIndex + 1}`
+                  ? `SPELL ${heldSkillIndex + 1}`
                   : `[${heldSkill.keyHint === 'SPACE' ? 'Space' : heldSkill.keyHint}]`}
               </span>
             </div>
             <div className="flex items-center gap-2 text-xs font-vt tabular-nums mt-0.5">
-              <span className="text-cyan-300 font-bold">{heldSkill.energyCost} MP</span>
-              <span className="text-slate-500">·</span>
-              <span className="text-amber-300 font-bold">{heldSkill.cooldown}s CD</span>
+              <span className="text-indigo-300 font-bold">{heldSkill.energyCost} Mana</span>
+              <span className="text-amber-700">·</span>
+              <span className="text-amber-400 font-bold">{heldSkill.cooldown}s CD</span>
             </div>
             {heldSkill.statBonusText && (
-              <div className="mt-1 text-xs font-vt text-emerald-300">
+              <div className="mt-1 text-xs font-vt text-emerald-400">
                 Passive: {heldSkill.statBonusText}
               </div>
             )}
-            <p className="mt-1 text-xs font-vt text-slate-100 leading-snug">{heldSkill.description}</p>
+            <p className="mt-1 text-xs font-vt text-amber-100/90 leading-snug">{heldSkill.description}</p>
           </div>
         )}
 
-        <div className="flex items-center gap-2">
-          {engine.player.skills.map((skill, idx) => {
+        {/* MOBA-Style Circular Skill Wheel: Central Strike Button Surrounded by 3 Skills in an Arc */}
+        <div className="relative w-[190px] h-[190px] select-none pointer-events-auto touch-none">
+          {/* Switch Weapon Button (Outer Left) */}
+          <button
+            type="button"
+            onPointerDown={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              engine.switchWeapon();
+              setNarrowTick(t => t + 1);
+            }}
+            className="absolute bottom-2 right-[136px] w-[38px] h-[38px] rounded-full bg-[#241710] border border-[#78593a] flex items-center justify-center text-amber-200 active:scale-90 touch-none shadow-md z-10"
+            title="Switch Weapon"
+          >
+            <RefreshCw className="w-4 h-4 text-amber-400" />
+          </button>
+
+          {/* Interact Button (Outer Top-Left) */}
+          {engine.interactPrompt && (
+            <button
+              type="button"
+              onPointerDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                engine.interact();
+                setNarrowTick(t => t + 1);
+              }}
+              className="absolute bottom-[114px] right-[62px] w-[40px] h-[40px] rounded-full bg-gradient-to-br from-amber-600 to-amber-800 border-2 border-amber-300 flex flex-col items-center justify-center text-amber-100 shadow-[0_0_14px_rgba(251,191,36,0.45)] active:scale-90 touch-none animate-pulse z-10"
+              title="Pick Up / Interact"
+            >
+              <Hand className="w-4 h-4 text-amber-200" />
+              <span className="text-[6px] font-bold text-amber-100 leading-none">PICK</span>
+            </button>
+          )}
+
+          {/* 3 Circular Skills Surrounding the Strike Hub */}
+          {engine.player.skills.slice(0, 3).map((skill, idx) => {
             const onCd = skill.currentCooldown > 0;
             const isUlt = Boolean(skill.isUltimate);
             const isHeld = heldSkillIndex === idx;
+
+            // Positioning surrounding the Strike button:
+            // idx 0 (Skill 1): to the Left of Strike (9 o'clock)
+            // idx 1 (Skill 2): to the Top-Left of Strike (10:30 o'clock / 135° diagonal)
+            // idx 2 (Ultimate): directly Above Strike (12 o'clock / 90° top)
+            const positionClass =
+              idx === 0
+                ? 'bottom-2 right-[82px] w-[46px] h-[46px]'
+                : idx === 1
+                ? 'bottom-[62px] right-[62px] w-[46px] h-[46px]'
+                : 'bottom-[82px] right-2 w-[50px] h-[50px]';
+
             return (
               <button
                 key={skill.id}
@@ -451,58 +498,30 @@ export const MobileControls: React.FC<MobileControlsProps> = ({ engine }) => {
                   }
                   setHeldSkillIndex(null);
                 }}
-                className={`relative w-12 h-12 rounded-full border-2 text-lg flex items-center justify-center shadow-lg active:scale-90 touch-none ${
+                className={`absolute ${positionClass} rounded-full border-2 flex flex-col items-center justify-center shadow-lg active:scale-90 touch-none transition-all ${
                   isHeld
-                    ? 'ring-2 ring-white scale-105 bg-slate-900 border-white'
+                    ? 'ring-2 ring-white scale-105 bg-[#3d2314] border-white z-20'
                     : onCd
-                    ? 'bg-slate-900/90 border-slate-700 opacity-60'
+                    ? 'bg-[#1a120c]/90 border-[#573922] opacity-60'
                     : isUlt
-                    ? 'bg-amber-950/85 border-amber-400'
-                    : 'bg-sky-950/85 border-sky-500'
+                    ? 'bg-gradient-to-br from-amber-950 to-red-950 border-amber-400 shadow-amber-900/40 ring-1 ring-amber-400/40'
+                    : 'bg-gradient-to-br from-[#1e1b4b] to-[#171226] border-[#818cf8]'
                 }`}
               >
-                <span>{skill.icon}</span>
+                <span className={`${isUlt ? 'text-lg' : 'text-base'} leading-none`}>{skill.icon}</span>
+                <span className="text-[8px] text-amber-200/90 font-vt leading-tight mt-0.5">
+                  {skill.energyCost} MP
+                </span>
                 {onCd && (
-                  <span className="absolute inset-0 rounded-full bg-black/70 flex items-center justify-center text-[8px] font-bold text-amber-300 tabular-nums">
+                  <span className="absolute inset-0 rounded-full bg-black/75 flex items-center justify-center text-[8px] font-bold text-amber-300 tabular-nums">
                     {skill.currentCooldown.toFixed(0)}s
                   </span>
                 )}
               </button>
             );
           })}
-        </div>
 
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onPointerDown={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              engine.switchWeapon();
-              setNarrowTick(t => t + 1);
-            }}
-            className="w-11 h-11 rounded-full bg-slate-800 border border-slate-600 flex items-center justify-center text-slate-300 active:scale-90 touch-none"
-            title="Switch Weapon"
-          >
-            <RefreshCw className="w-5 h-5" />
-          </button>
-
-          {engine.interactPrompt && (
-            <button
-              type="button"
-              onPointerDown={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                engine.interact();
-                setNarrowTick(t => t + 1);
-              }}
-              className="w-12 h-12 rounded-full bg-amber-600 border-2 border-amber-300 flex items-center justify-center text-white shadow-lg active:scale-90 touch-none"
-              title="Pick Up / Interact"
-            >
-              <Hand className="w-5 h-5" />
-            </button>
-          )}
-
+          {/* Central Strike Button (Large Circle Hub) */}
           <button
             type="button"
             onPointerDown={(e) => {
@@ -534,14 +553,17 @@ export const MobileControls: React.FC<MobileControlsProps> = ({ engine }) => {
               engine.isMouseDown = false;
               setNarrowTick(t => t + 1);
             }}
-            className={`w-16 h-16 rounded-full border-4 flex items-center justify-center text-white text-xl font-bold shadow-2xl transition-transform touch-none ${
+            className={`absolute bottom-1 right-1 w-[68px] h-[68px] rounded-full border-4 flex flex-col items-center justify-center text-white font-bold shadow-2xl transition-transform touch-none ${
               engine.isMouseDown
-                ? 'bg-red-500 border-red-300 scale-95'
-                : 'bg-red-600/90 border-red-400'
+                ? 'bg-gradient-to-br from-red-600 to-amber-700 border-amber-200 scale-95 shadow-red-900/50'
+                : 'bg-gradient-to-br from-red-700 to-amber-900 border-[#fbbf24] shadow-amber-950/70'
             }`}
-            title="Attack"
+            title="Strike"
           >
-            ⚔️
+            <Swords className="w-6 h-6 text-amber-200 mb-0.5" />
+            <span className="text-[8px] font-cinzel font-bold text-amber-200 tracking-wider">
+              STRIKE
+            </span>
           </button>
         </div>
       </div>

@@ -58,57 +58,57 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-3 font-pixel select-none">
-      <div className="w-full max-w-md max-h-[92dvh] overflow-y-auto bg-slate-950 border-4 border-red-700 rounded-xl p-4 sm:p-6 shadow-2xl flex flex-col items-center text-center">
-        <div className="text-3xl sm:text-4xl mb-1.5">💀</div>
+      <div className="w-full max-w-md max-h-[92dvh] overflow-y-auto bg-[#140e09] border-4 border-[#851e1e] rounded-xl p-4 sm:p-6 shadow-2xl flex flex-col items-center text-center">
+        <div className="text-3xl sm:text-4xl mb-1.5">⚔️💀⚔️</div>
 
-        <h2 className="text-sm sm:text-base md:text-lg font-bold text-red-500 mb-1">
-          {canOfferRevive ? 'YOU HAVE FALLEN!' : 'GAME OVER'}
+        <h2 className="text-sm sm:text-base md:text-lg font-bold text-red-500 font-cinzel tracking-wider mb-1">
+          {canOfferRevive ? 'THOU HAST FALLEN!' : 'VALIANT DEFEAT'}
         </h2>
 
-        <p className="text-slate-300 font-vt text-base mb-3.5 leading-snug">
+        <p className="text-amber-100/90 font-vt text-base mb-3.5 leading-snug">
           {canOfferRevive
-            ? `Spend ${engine.reviveCost} Soul Gems to revive on the spot, or return to Lobby to claim your kill rewards.`
-            : `All ${engine.maxRevives} revives used! +${reward.killGems} Kill Gems rewarded · Redirecting to Lobby in ${redirectSeconds}s...`}
+            ? `Channel ${engine.reviveCost} Soul Gems to resurrect on the spot, or return to Guild Hall with your slain monster bounty.`
+            : `All ${engine.maxRevives} resurrections exhausted! +${reward.killGems} Soul Gems claimed · Returning to Guild Hall in ${redirectSeconds}s...`}
         </p>
 
         {/* Run Stats, Kill Gem Calculation & Revive Counter */}
-        <div className="w-full bg-slate-900 border border-slate-800 rounded-lg p-3 sm:p-4 mb-4 space-y-1.5 text-[10px] tabular-nums">
-          <div className="flex justify-between border-b border-slate-800 pb-1.5">
-            <span className="text-slate-400">FLOOR &amp; DIFFICULTY</span>
-            <span className="text-amber-400 font-bold">
-              Floor {floor.floorNumber} · {diffCfg.name} ({reward.gemMultiplier.toFixed(1)}x)
+        <div className="w-full bg-[#1c120b] border border-[#573922] rounded-lg p-3 sm:p-4 mb-4 space-y-1.5 text-[10px] tabular-nums">
+          <div className="flex justify-between border-b border-[#3d2314] pb-1.5">
+            <span className="text-amber-300/70 font-cinzel text-[9px]">DEPTH &amp; TRIAL</span>
+            <span className="text-amber-300 font-bold">
+              Depth {floor.floorNumber} · {diffCfg.name} ({reward.gemMultiplier.toFixed(1)}x)
             </span>
           </div>
-          <div className="flex justify-between border-b border-slate-800 pb-1.5">
-            <span className="text-slate-400">ENEMIES SLAIN</span>
+          <div className="flex justify-between border-b border-[#3d2314] pb-1.5">
+            <span className="text-amber-300/70 font-cinzel text-[9px]">FOES SLAIN</span>
             <span className="text-rose-300 font-bold">
-              {reward.totalKills} KILLS
+              {reward.totalKills} SLAIN
               {reward.totalKills > 0
                 ? ` (${reward.normalKills}N · ${reward.eliteKills}E · ${reward.bossKills}B)`
                 : ''}
             </span>
           </div>
-          <div className="flex justify-between border-b border-slate-800 pb-1.5">
-            <span className="text-slate-400">
-              {canOfferRevive ? 'KILL GEMS (ON EXIT)' : 'KILL GEMS REWARDED'}
+          <div className="flex justify-between border-b border-[#3d2314] pb-1.5">
+            <span className="text-amber-300/70 font-cinzel text-[9px]">
+              {canOfferRevive ? 'SOUL GEMS (ON EXIT)' : 'SOUL GEMS REAPED'}
             </span>
             <span className="text-emerald-400 font-bold">
               +{reward.killGems} GEMS ({reward.baseKillGems} × {reward.gemMultiplier.toFixed(1)}x)
             </span>
           </div>
-          <div className="flex justify-between border-b border-slate-800 pb-1.5">
-            <span className="text-slate-400">REVIVES REMAINING</span>
+          <div className="flex justify-between border-b border-[#3d2314] pb-1.5">
+            <span className="text-amber-300/70 font-cinzel text-[9px]">RESURRECTIONS LEFT</span>
             <span className={revivesLeft > 0 ? 'text-emerald-400 font-bold' : 'text-rose-400 font-bold'}>
               {revivesLeft} / {engine.maxRevives}
             </span>
           </div>
-          <div className="flex justify-between border-b border-slate-800 pb-1.5">
-            <span className="text-slate-400">GOLD COLLECTED</span>
+          <div className="flex justify-between border-b border-[#3d2314] pb-1.5">
+            <span className="text-amber-300/70 font-cinzel text-[9px]">GOLD PLUNDERED</span>
             <span className="text-yellow-400 font-bold">{player.coins} G</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-slate-400">YOUR SOUL GEMS</span>
-            <span className="text-purple-400 font-bold flex items-center gap-1">
+            <span className="text-amber-300/70 font-cinzel text-[9px]">TOTAL SOUL GEMS</span>
+            <span className="text-purple-300 font-bold flex items-center gap-1">
               <Sparkles className="w-3.5 h-3.5 shrink-0" />
               <span>{currentGems} GEMS</span>
             </span>
@@ -122,30 +122,30 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
               type="button"
               disabled={!canAffordRevive}
               onClick={handleReviveClick}
-              className={`w-full py-3 px-4 rounded-lg text-[10px] sm:text-xs font-bold flex items-center justify-center gap-2 border-2 transition-all min-h-[44px] whitespace-nowrap ${
+              className={`w-full py-3 px-4 rounded-lg text-[10px] sm:text-xs font-bold flex items-center justify-center gap-2 border-2 transition-all min-h-[44px] whitespace-nowrap font-cinzel ${
                 canAffordRevive
-                  ? 'bg-emerald-600 hover:bg-emerald-500 text-white border-emerald-300 cursor-pointer shadow-lg active:scale-95'
-                  : 'bg-slate-900 text-slate-500 border-slate-800 cursor-not-allowed'
+                  ? 'bg-gradient-to-r from-emerald-700 to-teal-800 hover:from-emerald-600 hover:to-teal-700 text-white border-emerald-300 cursor-pointer shadow-lg active:scale-95'
+                  : 'bg-[#241710] text-amber-900 border-[#573922] cursor-not-allowed'
               }`}
             >
               <HeartPulse className="w-4 h-4 shrink-0" />
               <span>
                 {canAffordRevive
-                  ? `REVIVE · ${engine.reviveCost} GEMS (${revivesLeft} LEFT)`
-                  : `NEED ${engine.reviveCost} GEMS TO REVIVE`}
+                  ? `RESURRECT · ${engine.reviveCost} GEMS (${revivesLeft} LEFT)`
+                  : `NEED ${engine.reviveCost} GEMS TO RESURRECT`}
               </span>
             </button>
 
             <button
               type="button"
               onClick={onReturnToLobby}
-              className="w-full py-2.5 px-4 bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 rounded-lg text-[10px] sm:text-xs font-bold flex items-center justify-center gap-2 cursor-pointer min-h-[42px] whitespace-nowrap"
+              className="w-full py-2.5 px-4 bg-[#241710] hover:bg-[#342217] text-amber-200 border border-[#78593a] rounded-lg text-[10px] sm:text-xs font-bold flex items-center justify-center gap-2 cursor-pointer min-h-[42px] whitespace-nowrap font-cinzel"
             >
               <Home className="w-4 h-4 shrink-0" />
               <span>
                 {reward.killGems > 0
-                  ? `BACK TO LOBBY (+${reward.killGems} GEMS)`
-                  : 'BACK TO LOBBY'}
+                  ? `RETURN TO GUILD HALL (+${reward.killGems} GEMS)`
+                  : 'RETURN TO GUILD HALL'}
               </span>
             </button>
           </div>
@@ -153,10 +153,10 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
           <button
             type="button"
             onClick={onReturnToLobby}
-            className="w-full py-3 px-4 bg-red-600 hover:bg-red-500 text-white font-bold rounded-lg text-[10px] sm:text-xs flex items-center justify-center gap-2 cursor-pointer shadow-lg active:scale-95 transition-all min-h-[44px] whitespace-nowrap"
+            className="w-full py-3 px-4 bg-gradient-to-r from-red-700 to-amber-800 hover:from-red-600 hover:to-amber-700 text-amber-100 font-bold rounded-lg text-[10px] sm:text-xs flex items-center justify-center gap-2 cursor-pointer shadow-lg active:scale-95 transition-all min-h-[44px] whitespace-nowrap font-cinzel"
           >
             <Home className="w-4 h-4 shrink-0" />
-            <span>BACK TO LOBBY NOW</span>
+            <span>RETURN TO GUILD HALL</span>
           </button>
         )}
       </div>

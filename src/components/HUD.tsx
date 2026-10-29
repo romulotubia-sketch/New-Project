@@ -108,15 +108,15 @@ export const HUD: React.FC<HUDProps> = ({
   const getRarityBadgeColor = (rarity: string) => {
     switch (rarity) {
       case 'mythic':
-        return 'border-red-500 text-red-400 bg-red-950/60';
+        return 'border-rose-500 text-rose-300 bg-rose-950/80 shadow-[0_0_12px_rgba(244,63,94,0.3)]';
       case 'legendary':
-        return 'border-amber-500 text-amber-400 bg-amber-950/60';
+        return 'border-amber-400 text-amber-300 bg-amber-950/80 shadow-[0_0_12px_rgba(251,191,36,0.3)]';
       case 'epic':
-        return 'border-purple-500 text-purple-400 bg-purple-950/60';
+        return 'border-purple-400 text-purple-300 bg-purple-950/80 shadow-[0_0_10px_rgba(192,132,252,0.25)]';
       case 'rare':
-        return 'border-sky-500 text-sky-400 bg-sky-950/60';
+        return 'border-indigo-400 text-indigo-300 bg-indigo-950/80';
       default:
-        return 'border-slate-500 text-slate-300 bg-slate-900/60';
+        return 'border-[#78593a] text-amber-100 bg-[#171424]/90';
     }
   };
 
@@ -161,9 +161,9 @@ export const HUD: React.FC<HUDProps> = ({
         {/* Left: Player Stats (HP, Shield, Energy, Currencies) */}
         <div className="flex flex-col gap-1 lg:gap-1.5 pointer-events-auto">
           {/* HP Bar */}
-          <div className="flex items-center gap-2 bg-slate-950/85 backdrop-blur-sm border-2 border-slate-700 px-2.5 py-1 lg:px-3 lg:py-1.5 rounded shadow-lg w-44 sm:w-48 lg:w-56">
+          <div className="flex items-center gap-2 bg-[#0e0c18]/90 backdrop-blur-sm border-2 border-[#684c30] px-2.5 py-1 lg:px-3 lg:py-1.5 rounded shadow-lg w-44 sm:w-48 lg:w-56">
             <span className="text-red-500 text-[10px] lg:text-xs">❤️</span>
-            <div className="flex-1 bg-slate-800 h-2.5 lg:h-3.5 border border-black rounded-xs overflow-hidden">
+            <div className="flex-1 bg-stone-900 h-2.5 lg:h-3.5 border border-[#3e2e1e] rounded-xs overflow-hidden">
               <div
                 className={`bg-red-500 h-full transition-all duration-150 ${getProgressWidthClass(player.hp, player.maxHp)}`}
               />
@@ -174,44 +174,44 @@ export const HUD: React.FC<HUDProps> = ({
           </div>
 
           {/* Shield Bar */}
-          <div className="flex items-center gap-2 bg-slate-950/85 backdrop-blur-sm border-2 border-slate-700 px-2.5 py-1 lg:px-3 lg:py-1.5 rounded shadow-lg w-44 sm:w-48 lg:w-56">
-            <span className="text-sky-400 text-[10px] lg:text-xs">🛡️</span>
-            <div className="flex-1 bg-slate-800 h-2.5 lg:h-3.5 border border-black rounded-xs overflow-hidden">
+          <div className="flex items-center gap-2 bg-[#0e0c18]/90 backdrop-blur-sm border-2 border-[#684c30] px-2.5 py-1 lg:px-3 lg:py-1.5 rounded shadow-lg w-44 sm:w-48 lg:w-56">
+            <span className="text-amber-400 text-[10px] lg:text-xs">🛡️</span>
+            <div className="flex-1 bg-stone-900 h-2.5 lg:h-3.5 border border-[#3e2e1e] rounded-xs overflow-hidden">
               <div
-                className={`bg-sky-400 h-full transition-all duration-150 ${getProgressWidthClass(player.shield, player.maxShield)}`}
+                className={`bg-amber-400 h-full transition-all duration-150 ${getProgressWidthClass(player.shield, player.maxShield)}`}
               />
             </div>
-            <span className="text-sky-200 font-vt text-xs lg:text-sm w-11 lg:w-12 text-right">
+            <span className="text-amber-200 font-vt text-xs lg:text-sm w-11 lg:w-12 text-right">
               {Math.floor(player.shield)}/{player.maxShield}
             </span>
           </div>
 
-          {/* Energy Bar */}
-          <div className="flex items-center gap-2 bg-slate-950/85 backdrop-blur-sm border-2 border-slate-700 px-2.5 py-1 lg:px-3 lg:py-1.5 rounded shadow-lg w-44 sm:w-48 lg:w-56">
-            <span className="text-cyan-400 text-[10px] lg:text-xs">⚡</span>
-            <div className="flex-1 bg-slate-800 h-2.5 lg:h-3 border border-black rounded-xs overflow-hidden">
+          {/* Energy Bar (Mana) */}
+          <div className="flex items-center gap-2 bg-[#0e0c18]/90 backdrop-blur-sm border-2 border-[#684c30] px-2.5 py-1 lg:px-3 lg:py-1.5 rounded shadow-lg w-44 sm:w-48 lg:w-56">
+            <span className="text-indigo-400 text-[10px] lg:text-xs">🔮</span>
+            <div className="flex-1 bg-stone-900 h-2.5 lg:h-3 border border-[#3e2e1e] rounded-xs overflow-hidden">
               <div
-                className={`bg-cyan-400 h-full transition-all duration-100 ${getProgressWidthClass(player.energy, player.maxEnergy)}`}
+                className={`bg-indigo-500 h-full transition-all duration-100 ${getProgressWidthClass(player.energy, player.maxEnergy)}`}
               />
             </div>
-            <span className="text-cyan-200 font-vt text-xs lg:text-sm w-11 lg:w-12 text-right">
+            <span className="text-indigo-200 font-vt text-xs lg:text-sm w-11 lg:w-12 text-right">
               {Math.round(player.energy)}/{player.maxEnergy}
             </span>
           </div>
 
           {/* Currencies (Coins, Banked Soul Gems & Live Run Kills) + Active Hero's 2 Exclusive Buffs */}
           <div className="flex items-center gap-1.5 flex-wrap">
-            <div className="flex items-center gap-2.5 bg-slate-950/80 backdrop-blur-sm border border-slate-800 px-2.5 py-0.5 lg:px-3 lg:py-1 rounded w-fit text-[10px] lg:text-xs">
+            <div className="flex items-center gap-2.5 bg-[#0e0c18]/90 backdrop-blur-sm border border-[#684c30] px-2.5 py-0.5 lg:px-3 lg:py-1 rounded w-fit text-[10px] lg:text-xs">
               <div className="flex items-center gap-1 text-amber-400" title="Gold Coins">
-                <Coins className="w-3 h-3 lg:w-3.5 lg:h-3.5" />
+                <Coins className="w-3 h-3 lg:w-3.5 lg:h-3.5 text-amber-400" />
                 <span>{player.coins}</span>
               </div>
-              <div className="flex items-center gap-1 text-rose-400" title="Enemies Slain This Run">
-                <Swords className="w-3 h-3 lg:w-3.5 lg:h-3.5" />
+              <div className="flex items-center gap-1 text-rose-400" title="Monsters Slain This Run">
+                <Swords className="w-3 h-3 lg:w-3.5 lg:h-3.5 text-rose-400" />
                 <span>{engine.killCounter}</span>
               </div>
-              <div className="flex items-center gap-1 text-purple-400" title="Banked Soul Gems">
-                <Sparkles className="w-3 h-3 lg:w-3.5 lg:h-3.5" />
+              <div className="flex items-center gap-1 text-purple-400" title="Soul Gems">
+                <Sparkles className="w-3 h-3 lg:w-3.5 lg:h-3.5 text-purple-400" />
                 <span>{player.soulGems}</span>
               </div>
             </div>
@@ -263,48 +263,48 @@ export const HUD: React.FC<HUDProps> = ({
 
         {/* Center: Floor Indicator, Difficulty & Boss Bar */}
         <div className="flex flex-col items-center gap-1.5 pointer-events-auto">
-          <div className="bg-slate-950/90 border-2 border-slate-700 px-3 py-1 lg:px-4 lg:py-1.5 rounded shadow-md text-center">
-            <div className="text-[8px] lg:text-[9px] text-slate-400 uppercase tracking-widest">
-              {floor.biome} · {(DIFFICULTY_CONFIGS[engine.difficulty] || DIFFICULTY_CONFIGS.medium).name.toUpperCase()}
+          <div className="bg-[#0e0c18]/95 border-2 border-[#78593a] px-3.5 py-1 lg:px-4 lg:py-1.5 rounded-lg shadow-xl text-center">
+            <div className="text-[8px] lg:text-[9px] text-amber-200/80 uppercase tracking-widest font-cinzel">
+              {floor.biome} · {(DIFFICULTY_CONFIGS[engine.difficulty] || DIFFICULTY_CONFIGS.medium).name.toUpperCase()} REALM
             </div>
-            <div className="text-[10px] lg:text-xs text-amber-400 font-bold whitespace-nowrap">
-              FLOOR {floor.floorNumber} · {Math.max(0, engine.maxRevives - engine.revivesUsed)}/{engine.maxRevives} REVIVES
+            <div className="text-[10px] lg:text-xs text-amber-300 font-bold whitespace-nowrap">
+              FLOOR {floor.floorNumber} · {Math.max(0, engine.maxRevives - engine.revivesUsed)}/{engine.maxRevives} LIVES
             </div>
           </div>
 
           {boss && (
             <div
-              className={`flex flex-col items-center gap-1 bg-slate-950/95 border-2 px-4 py-1.5 rounded shadow-2xl w-64 sm:w-76 lg:w-88 ${
+              className={`flex flex-col items-center gap-1 bg-[#130f1e]/95 border-2 px-4 py-1.5 rounded-lg shadow-2xl w-64 sm:w-76 lg:w-88 ${
                 boss.bossPhase === 3
                   ? 'border-rose-500 shadow-[0_0_18px_rgba(244,63,94,0.45)]'
                   : boss.bossPhase === 2
                   ? 'border-orange-500'
-                  : 'border-red-600'
+                  : 'border-red-700'
               }`}
             >
               <div className="flex items-center justify-between w-full gap-2">
-                <div className="text-[10px] lg:text-xs text-red-400 font-bold tracking-wide uppercase truncate">
+                <div className="text-[10px] lg:text-xs text-red-400 font-bold tracking-wide uppercase truncate font-cinzel">
                   ☠ {boss.name}
                 </div>
                 <span
                   className={`text-[8px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap ${
                     boss.bossPhase === 3
-                      ? 'bg-rose-600 text-white'
+                      ? 'bg-rose-700 text-white'
                       : boss.bossPhase === 2
-                      ? 'bg-orange-600 text-white'
-                      : 'bg-slate-800 text-red-300'
+                      ? 'bg-orange-700 text-white'
+                      : 'bg-stone-900 border border-red-800 text-red-300'
                   }`}
                 >
                   {boss.bossPhase === 3 ? 'BERSERK' : boss.bossPhase === 2 ? 'ENRAGED' : 'PHASE I'}
                 </span>
               </div>
-              <div className="w-full bg-slate-900 border border-red-800 h-3 rounded overflow-hidden">
+              <div className="w-full bg-stone-950 border border-[#4a1c1d] h-3 rounded overflow-hidden">
                 <div
                   className={`h-full transition-all duration-150 ${
                     boss.bossPhase === 3
-                      ? 'bg-rose-500'
+                      ? 'bg-rose-600'
                       : boss.bossPhase === 2
-                      ? 'bg-orange-500'
+                      ? 'bg-orange-600'
                       : 'bg-red-600'
                   } ${getProgressWidthClass(boss.hp, boss.maxHp)}`}
                 />
@@ -325,15 +325,15 @@ export const HUD: React.FC<HUDProps> = ({
                 engine.toggleMap();
                 setHudTick(t => t + 1);
               }}
-              className={`px-2 py-1.5 border rounded text-[9px] flex items-center gap-1 cursor-pointer shadow-md transition-all min-h-[34px] whitespace-nowrap shrink-0 ${
+              className={`px-2.5 py-1.5 border rounded-lg text-[9px] flex items-center gap-1 cursor-pointer shadow-md transition-all min-h-[34px] whitespace-nowrap shrink-0 ${
                 engine.isMapExpanded
-                  ? 'bg-sky-600 border-sky-400 text-white'
-                  : 'bg-slate-900/90 hover:bg-slate-800 text-sky-300 border-slate-700'
+                  ? 'bg-amber-600 border-amber-300 text-stone-950 font-bold'
+                  : 'bg-[#151222]/90 hover:bg-[#201c33] text-amber-200 border-[#78593a]'
               }`}
-              title={hidePcKeyLabels ? 'Toggle Tactical Map' : 'Toggle Tactical Map [M / Tab]'}
+              title={hidePcKeyLabels ? 'Toggle Realm Map' : 'Toggle Realm Map [M / Tab]'}
             >
-              <Map className="w-3.5 h-3.5 text-sky-400 shrink-0" />
-              <span className="hidden sm:inline">MAP</span>
+              <Map className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+              <span className="hidden sm:inline font-bold">MAP</span>
             </button>
 
             <LandscapeModeButton iconOnly />
@@ -344,7 +344,7 @@ export const HUD: React.FC<HUDProps> = ({
                 sounds.toggleMute();
                 setHudTick(t => t + 1);
               }}
-              className="p-1.5 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 rounded cursor-pointer min-w-[34px] min-h-[34px] flex items-center justify-center shrink-0"
+              className="p-1.5 bg-[#151222]/90 hover:bg-[#201c33] text-amber-100 border border-[#78593a] rounded-lg cursor-pointer min-w-[34px] min-h-[34px] flex items-center justify-center shrink-0"
               title="Toggle Audio"
             >
               {sounds.enabled ? <Volume2 className="w-4 h-4 text-emerald-400" /> : <VolumeX className="w-4 h-4 text-rose-400" />}
@@ -353,17 +353,17 @@ export const HUD: React.FC<HUDProps> = ({
             <button
               type="button"
               onClick={onOpenSkillTree}
-              className="px-2 py-1.5 bg-purple-900/80 hover:bg-purple-800 text-purple-200 border border-purple-600 rounded text-[9px] flex items-center gap-1 cursor-pointer shadow-md min-h-[34px] whitespace-nowrap shrink-0"
-              title={hidePcKeyLabels ? 'Talent Skill Tree' : 'Talent Skill Tree [T]'}
+              className="px-2.5 py-1.5 bg-purple-950/85 hover:bg-purple-900 text-purple-200 border border-purple-500 rounded-lg text-[9px] flex items-center gap-1 cursor-pointer shadow-md min-h-[34px] whitespace-nowrap shrink-0"
+              title={hidePcKeyLabels ? 'Heroic Talent Grimoire' : 'Heroic Talent Grimoire [T]'}
             >
               <Sparkles className="w-3.5 h-3.5 text-purple-300 shrink-0" />
-              <span className="hidden md:inline">TALENTS</span>
+              <span className="hidden md:inline font-bold">GRIMOIRE</span>
             </button>
 
             <button
               type="button"
               onClick={onPause}
-              className="p-1.5 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 rounded cursor-pointer min-w-[34px] min-h-[34px] flex items-center justify-center shrink-0"
+              className="p-1.5 bg-[#151222]/90 hover:bg-[#201c33] text-amber-100 border border-[#78593a] rounded-lg cursor-pointer min-w-[34px] min-h-[34px] flex items-center justify-center shrink-0"
               title={hidePcKeyLabels ? 'Pause & Settings' : 'Pause & Settings [ESC]'}
             >
               <Pause className="w-4 h-4" />
@@ -393,16 +393,16 @@ export const HUD: React.FC<HUDProps> = ({
       {/* Bottom Bar: Center Equipped Weapon Card & Right 3-Skill + Attack Tray (active across all Landscape sm: 640px+ & Desktop viewports) */}
       <div className="hidden sm:flex justify-between items-end w-full pl-36 lg:pl-40 gap-2">
         {/* Equipped Weapons Card */}
-        <div className="flex items-center gap-2 lg:gap-3 bg-slate-950/90 border-2 border-slate-700 p-1.5 lg:p-2.5 rounded-lg shadow-xl pointer-events-auto touch-none">
+        <div className="flex items-center gap-2 lg:gap-3 bg-[#0e0c18]/90 border-2 border-[#78593a] p-1.5 lg:p-2.5 rounded-lg shadow-xl pointer-events-auto touch-none">
           {currentWeapon && (
             <div className={`flex flex-col gap-0.5 lg:gap-1 p-1.5 lg:p-2 border rounded ${getRarityBadgeColor(currentWeapon.rarity)}`}>
               <div className="flex justify-between items-center gap-2 text-[9px] lg:text-[10px]">
                 <span className="font-bold whitespace-nowrap">{currentWeapon.name}</span>
                 <span className="hidden md:inline text-[8px] uppercase tracking-wider whitespace-nowrap">{currentWeapon.rarity}</span>
               </div>
-              <div className="flex items-center gap-2 lg:gap-3 text-xs text-slate-300 font-vt whitespace-nowrap">
+              <div className="flex items-center gap-2 lg:gap-3 text-xs text-amber-200/90 font-vt whitespace-nowrap">
                 <span>DMG {currentWeapon.damage}</span>
-                <span>MP {currentWeapon.energyCost}</span>
+                <span>MANA {currentWeapon.energyCost}</span>
                 <span>CRIT {Math.round(currentWeapon.critChance * 100)}%</span>
               </div>
             </div>
@@ -417,14 +417,14 @@ export const HUD: React.FC<HUDProps> = ({
                 onSwitchWeapon();
                 setHudTick(t => t + 1);
               }}
-              className="flex flex-col items-center justify-center gap-0.5 p-1.5 lg:p-2 min-h-[44px] bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded cursor-pointer transition-all active:scale-95 whitespace-nowrap shrink-0 touch-none"
+              className="flex flex-col items-center justify-center gap-0.5 p-1.5 lg:p-2 min-h-[44px] bg-[#181427] hover:bg-[#251e3a] border border-[#78593a] rounded cursor-pointer transition-all active:scale-95 whitespace-nowrap shrink-0 touch-none"
               title={hidePcKeyLabels ? 'Switch Weapon' : 'Switch Weapon [Q]'}
             >
-              <div className="text-[8px] text-slate-400 flex items-center gap-1">
-                <RefreshCw className="w-3 h-3 text-slate-400" />
+              <div className="text-[8px] text-amber-300 flex items-center gap-1">
+                <RefreshCw className="w-3 h-3 text-amber-400" />
                 <span>{hidePcKeyLabels ? 'SWAP' : 'SWAP [Q]'}</span>
               </div>
-              <div className="text-xs font-vt text-slate-300 truncate max-w-[84px] lg:max-w-[96px]">{secondaryWeapon.name}</div>
+              <div className="text-xs font-vt text-amber-100 truncate max-w-[84px] lg:max-w-[96px]">{secondaryWeapon.name}</div>
             </button>
           )}
         </div>
@@ -514,7 +514,27 @@ export const HUD: React.FC<HUDProps> = ({
             </div>
           )}
 
-          <div className="flex items-center gap-1.5 lg:gap-2.5 bg-slate-950/90 border-2 border-slate-700 p-1.5 lg:p-2 rounded-lg shadow-2xl">
+          {/* MOBA-Style Circular Skill Wheel: Central Strike Button Surrounded by 3 Skills in an Arc */}
+          <div className="relative w-[210px] h-[210px] sm:w-[230px] sm:h-[230px] lg:w-[250px] lg:h-[250px] pointer-events-auto touch-none select-none">
+            {/* Switch Weapon Circular Button (Outer Left) */}
+            <button
+              type="button"
+              onPointerDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onSwitchWeapon();
+                setHudTick(t => t + 1);
+              }}
+              className="absolute bottom-2 sm:bottom-3 right-[152px] sm:right-[168px] lg:right-[184px] w-[42px] h-[42px] sm:w-[46px] sm:h-[46px] rounded-full bg-[#241710] hover:bg-[#382317] border border-[#78593a] flex flex-col items-center justify-center text-amber-200 active:scale-90 touch-none shadow-lg cursor-pointer transition-transform z-10"
+              title={hidePcKeyLabels ? 'Switch Weapon' : 'Switch Weapon [Q]'}
+            >
+              <RefreshCw className="w-4 h-4 text-amber-400" />
+              {!hidePcKeyLabels && (
+                <span className="text-[7px] font-bold text-amber-300/80 leading-none">Q</span>
+              )}
+            </button>
+
+            {/* Interact Button (Appears dynamically at Top-Left outer arc) */}
             {interactPrompt && (
               <button
                 type="button"
@@ -524,25 +544,37 @@ export const HUD: React.FC<HUDProps> = ({
                   engine.interact();
                   setHudTick(t => t + 1);
                 }}
-                className="flex flex-col items-center justify-center w-14 h-14 lg:w-16 lg:h-16 rounded border-2 border-amber-400 bg-amber-950/85 hover:bg-amber-900/90 text-amber-200 cursor-pointer shadow-[0_0_12px_rgba(251,191,36,0.3)] transition-transform active:scale-95 touch-none"
+                className="absolute bottom-[128px] sm:bottom-[142px] lg:bottom-[154px] right-[70px] sm:right-[80px] lg:right-[88px] w-[44px] h-[44px] sm:w-[48px] sm:h-[48px] rounded-full bg-gradient-to-br from-amber-600 to-amber-800 border-2 border-amber-300 flex flex-col items-center justify-center text-amber-100 shadow-[0_0_14px_rgba(251,191,36,0.45)] active:scale-90 touch-none animate-pulse cursor-pointer z-10"
                 title={hidePcKeyLabels ? 'Pick Up / Interact' : 'Pick Up / Interact [F]'}
               >
-                <Hand className="w-5 h-5 text-amber-300 mb-0.5" />
-                <span className="text-[8px] font-bold tracking-tight whitespace-nowrap">
-                  {hidePcKeyLabels ? 'PICK' : 'PICK [F]'}
+                <Hand className="w-4 h-4 text-amber-200" />
+                <span className="text-[7px] font-bold text-amber-100 leading-none">
+                  {hidePcKeyLabels ? 'PICK' : '[F]'}
                 </span>
               </button>
             )}
 
-            {player.skills.map((skill, index) => {
+            {/* 3 Circular Skills Surrounding the Strike Hub */}
+            {player.skills.slice(0, 3).map((skill, index) => {
               const isCoolingDown = skill.currentCooldown > 0;
               const cooldownRatio = skill.cooldown > 0 ? skill.currentCooldown / skill.cooldown : 0;
               const isUlt = Boolean(skill.isUltimate);
               const isHeldInspecting = heldSkillIndex === index;
 
+              // Positioning surrounding the Strike button:
+              // index 0 (Skill 1): to the Left of Strike (9 o'clock)
+              // index 1 (Skill 2): to the Top-Left of Strike (10:30 o'clock / 135° diagonal)
+              // index 2 (Ultimate): directly Above Strike (12 o'clock / 90° top)
+              const positionClass =
+                index === 0
+                  ? 'bottom-2 sm:bottom-2.5 right-[92px] sm:right-[102px] lg:right-[112px] w-[50px] h-[50px] sm:w-[56px] sm:h-[56px] lg:w-[60px] lg:h-[60px]'
+                  : index === 1
+                  ? 'bottom-[70px] sm:bottom-[78px] lg:bottom-[86px] right-[70px] sm:right-[78px] lg:right-[86px] w-[50px] h-[50px] sm:w-[56px] sm:h-[56px] lg:w-[60px] lg:h-[60px]'
+                  : 'bottom-[92px] sm:bottom-[102px] lg:bottom-[112px] right-2 sm:right-2.5 w-[54px] h-[54px] sm:w-[60px] sm:h-[60px] lg:w-[64px] lg:h-[64px]';
+
               const readyStyles = isUlt
-                ? 'border-amber-400 bg-amber-950/60 hover:bg-amber-900/75 text-amber-200 shadow-[0_0_14px_rgba(245,158,11,0.35)]'
-                : 'border-sky-500 bg-sky-950/60 hover:bg-sky-900/80 text-sky-200 shadow-[0_0_10px_rgba(56,189,248,0.25)]';
+                ? 'border-amber-400 bg-gradient-to-br from-amber-950 via-stone-900 to-red-950 text-amber-200 ring-2 ring-amber-400/40 shadow-[0_0_16px_rgba(245,158,11,0.4)]'
+                : 'border-indigo-400 bg-gradient-to-br from-[#1b1933] to-[#120f22] text-indigo-100 shadow-[0_0_12px_rgba(129,140,248,0.3)] hover:border-indigo-300';
 
               return (
                 <button
@@ -605,11 +637,11 @@ export const HUD: React.FC<HUDProps> = ({
                     }
                     setHeldSkillIndex(null);
                   }}
-                  className={`relative flex flex-col items-center justify-center w-13 h-14 lg:w-16 lg:h-16 rounded border-2 transition-all cursor-pointer active:scale-95 touch-none ${
+                  className={`absolute ${positionClass} rounded-full border-2 flex flex-col items-center justify-center cursor-pointer transition-transform active:scale-90 touch-none ${
                     isHeldInspecting
-                      ? 'ring-2 ring-white scale-105 border-white bg-slate-900 text-white'
+                      ? 'ring-2 ring-white scale-105 border-white bg-[#3d2314] text-white z-20'
                       : isCoolingDown
-                      ? 'border-slate-700 bg-slate-900/80 text-slate-500'
+                      ? 'border-[#573922] bg-[#14100c] text-stone-500 opacity-80'
                       : readyStyles
                   }`}
                   title={
@@ -618,20 +650,30 @@ export const HUD: React.FC<HUDProps> = ({
                       : `${skill.name} ${formatSkillKeyLabel(skill.keyHint)} — Tap to cast, hold for description`
                   }
                 >
-                  <span className="text-lg lg:text-xl mb-0.5">{skill.icon}</span>
+                  <span className={`${isUlt ? 'text-lg sm:text-xl lg:text-2xl' : 'text-base sm:text-lg lg:text-xl'} leading-none`}>
+                    {skill.icon}
+                  </span>
                   {!hidePcKeyLabels && (
-                    <span className={`text-[7px] lg:text-[8px] font-bold tracking-tight whitespace-nowrap ${isUlt ? 'text-amber-300' : 'text-sky-300'}`}>
+                    <span
+                      className={`absolute -top-1 px-1.5 py-0.2 rounded-full border text-[7px] font-bold leading-tight ${
+                        isUlt
+                          ? 'bg-[#2a170d] border-amber-400 text-amber-300'
+                          : 'bg-[#18110b] border-indigo-400/80 text-indigo-300'
+                      }`}
+                    >
                       {formatSkillKeyLabel(skill.keyHint)}
                     </span>
                   )}
-                  <span className="text-[10px] text-cyan-400 font-vt leading-none">{skill.energyCost} MP</span>
+                  <span className="text-[8px] sm:text-[9px] text-amber-200/90 font-vt leading-tight mt-0.5">
+                    {skill.energyCost} MP
+                  </span>
 
                   {isCoolingDown && (
-                    <div className="absolute inset-0 bg-black/75 rounded flex items-center justify-center overflow-hidden">
+                    <div className="absolute inset-0 rounded-full bg-black/80 flex items-center justify-center overflow-hidden">
                       <div
-                        className={`absolute bottom-0 left-0 right-0 bg-indigo-950/80 border-t border-sky-400 ${getCooldownHeightClass(cooldownRatio)}`}
+                        className={`absolute bottom-0 left-0 right-0 bg-purple-950/85 border-t border-amber-400 ${getCooldownHeightClass(cooldownRatio)}`}
                       />
-                      <span className="relative text-[10px] lg:text-xs font-bold text-amber-300 z-10">
+                      <span className="relative text-[9px] sm:text-[10px] lg:text-xs font-bold text-amber-300 z-10 tabular-nums">
                         {skill.currentCooldown.toFixed(1)}s
                       </span>
                     </div>
@@ -640,7 +682,7 @@ export const HUD: React.FC<HUDProps> = ({
               );
             })}
 
-            {/* Tactile Attack Button (Pointer-captured so right-thumb holds never slip while moving) */}
+            {/* Central Normal Attack / Strike Button (Large Circle Hub) */}
             <button
               type="button"
               onPointerDown={(e) => {
@@ -672,15 +714,17 @@ export const HUD: React.FC<HUDProps> = ({
                 engine.isMouseDown = false;
                 setHudTick(t => t + 1);
               }}
-              className={`flex flex-col items-center justify-center w-14 h-14 lg:w-16 lg:h-16 rounded border-2 cursor-pointer transition-transform touch-none ${
+              className={`absolute bottom-1 right-1 sm:bottom-1.5 sm:right-1.5 w-[72px] h-[72px] sm:w-[80px] sm:h-[80px] lg:w-[88px] lg:h-[88px] rounded-full border-4 flex flex-col items-center justify-center cursor-pointer transition-transform touch-none shadow-2xl ${
                 engine.isMouseDown
-                  ? 'bg-red-600 border-red-300 text-white scale-95'
-                  : 'bg-red-950/75 hover:bg-red-900/80 border-red-500 text-red-200'
+                  ? 'bg-gradient-to-br from-red-600 to-amber-700 border-amber-200 scale-95 shadow-[0_0_24px_rgba(245,158,11,0.6)]'
+                  : 'bg-gradient-to-br from-red-700 to-amber-950 border-[#fbbf24] shadow-[0_0_18px_rgba(251,191,36,0.35)] hover:border-amber-300'
               }`}
-              title={hidePcKeyLabels ? 'Fire / Attack' : 'Fire / Attack [Left Click]'}
+              title={hidePcKeyLabels ? 'Strike' : 'Strike [Left Click]'}
             >
-              <Swords className="w-5 h-5 text-red-300 mb-0.5" />
-              <span className="text-[8px] font-bold tracking-tight">ATK</span>
+              <Swords className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-amber-200 mb-0.5" />
+              <span className="text-[8px] sm:text-[9px] font-cinzel font-bold text-amber-200 tracking-wider">
+                STRIKE
+              </span>
             </button>
           </div>
         </div>

@@ -77,28 +77,28 @@ export const SkillTreeModal: React.FC<SkillTreeModalProps> = ({
 
   const branches = [
     { id: 'all', label: 'All Talents', icon: <Sparkles className="w-3.5 h-3.5 text-purple-400" /> },
-    { id: 'offensive', label: 'Offensive', icon: <Swords className="w-3.5 h-3.5 text-red-400" /> },
-    { id: 'defensive', label: 'Defensive', icon: <Shield className="w-3.5 h-3.5 text-sky-400" /> },
-    { id: 'utility', label: 'Utility & Flow', icon: <Zap className="w-3.5 h-3.5 text-amber-400" /> },
-    { id: 'fortune', label: 'Fortune & Loot', icon: <Coins className="w-3.5 h-3.5 text-emerald-400" /> },
+    { id: 'offensive', label: 'Offensive Spells', icon: <Swords className="w-3.5 h-3.5 text-red-400" /> },
+    { id: 'defensive', label: 'Aegis & Ward', icon: <Shield className="w-3.5 h-3.5 text-sky-400" /> },
+    { id: 'utility', label: 'Arcane Flow', icon: <Zap className="w-3.5 h-3.5 text-amber-400" /> },
+    { id: 'fortune', label: 'Bounty & Relics', icon: <Coins className="w-3.5 h-3.5 text-emerald-400" /> },
   ];
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-2 sm:p-4 font-pixel select-none">
-      <div className="relative w-full max-w-5xl max-h-[94dvh] bg-slate-950 border-4 border-indigo-600 rounded-xl shadow-2xl flex flex-col overflow-hidden">
+      <div className="relative w-full max-w-5xl max-h-[94dvh] bg-[#140e09] border-4 border-[#b45309] rounded-xl shadow-2xl flex flex-col overflow-hidden">
         
         {/* Top Header */}
-        <div className="flex items-center justify-between border-b-2 border-indigo-900 px-3 py-2 sm:px-5 sm:py-3 bg-slate-900/90 shrink-0">
+        <div className="flex items-center justify-between border-b-2 border-[#78593a] px-3 py-2 sm:px-5 sm:py-3 bg-[#1d120a] shrink-0">
           <div className="flex items-center gap-2.5">
             <span className="text-xl sm:text-2xl">🔮</span>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-xs sm:text-sm md:text-base font-bold text-indigo-300">HERO SKILL TREES</h2>
-                <span className="text-[8px] sm:text-[9px] px-1.5 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-700 font-bold uppercase">
-                  Class Specific
+                <h2 className="text-xs sm:text-sm md:text-base font-bold text-amber-300 font-cinzel tracking-wider">HERO TALENT GRIMOIRES</h2>
+                <span className="text-[8px] sm:text-[9px] px-1.5 py-0.5 rounded bg-[#2e190d] text-amber-300 border border-[#b45309] font-bold uppercase font-cinzel">
+                  Hero Specific
                 </span>
               </div>
-              <p className="hidden sm:block text-slate-400 font-vt text-sm leading-none mt-0.5">
+              <p className="hidden sm:block text-amber-200/70 font-vt text-sm leading-none mt-0.5">
                 Each hero commands their own specialized talent path tailored to their combat playstyle!
               </p>
             </div>
@@ -106,7 +106,7 @@ export const SkillTreeModal: React.FC<SkillTreeModalProps> = ({
 
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             {/* Soul Gem Counter */}
-            <div className="flex items-center gap-1.5 bg-purple-950/80 border-2 border-purple-500 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg text-purple-300 shadow-[0_0_12px_rgba(168,85,247,0.3)] tabular-nums">
+            <div className="flex items-center gap-1.5 bg-[#2c133a] border-2 border-purple-500/80 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg text-purple-200 shadow-[0_0_12px_rgba(168,85,247,0.3)] tabular-nums font-cinzel">
               <Sparkles className="w-3.5 h-3.5 text-purple-300" />
               <span className="text-xs font-bold">{soulGems} GEMS</span>
             </div>
@@ -114,7 +114,7 @@ export const SkillTreeModal: React.FC<SkillTreeModalProps> = ({
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 rounded cursor-pointer min-w-[34px] min-h-[34px] flex items-center justify-center"
+              className="p-1.5 bg-[#241710] hover:bg-[#342217] text-amber-200 border border-[#78593a] rounded cursor-pointer min-w-[34px] min-h-[34px] flex items-center justify-center"
               title="Close Skill Tree"
             >
               <X className="w-5 h-5" />
@@ -123,8 +123,8 @@ export const SkillTreeModal: React.FC<SkillTreeModalProps> = ({
         </div>
 
         {/* Hero Selector Tabs Bar (All 12 Heroes) */}
-        <div className="flex items-center gap-1.5 border-b border-slate-800 px-3 py-1.5 sm:px-4 sm:py-2 bg-slate-900/70 overflow-x-auto shrink-0">
-          <span className="text-[8px] text-slate-400 font-bold shrink-0 uppercase pr-1">HERO:</span>
+        <div className="flex items-center gap-1.5 border-b border-[#573922] px-3 py-1.5 sm:px-4 sm:py-2 bg-[#19100a] overflow-x-auto shrink-0">
+          <span className="text-[8px] text-amber-300/80 font-bold shrink-0 uppercase pr-1 font-cinzel">HERO:</span>
           {CHARACTERS.map(hero => {
             const isSelected = hero.id === selectedHero;
             const isUnlocked = skillTreeManager.isHeroUnlocked(hero.id);
@@ -134,19 +134,19 @@ export const SkillTreeModal: React.FC<SkillTreeModalProps> = ({
                 key={hero.id}
                 type="button"
                 onClick={() => handleSelectHero(hero.id)}
-                className={`flex items-center gap-1.5 px-2 py-1 rounded-md border text-[8px] sm:text-[9px] cursor-pointer whitespace-nowrap shrink-0 transition-all ${
+                className={`flex items-center gap-1.5 px-2 py-1 rounded-md border text-[8px] sm:text-[9px] cursor-pointer whitespace-nowrap shrink-0 transition-all font-cinzel ${
                   isSelected
                     ? 'bg-amber-500 text-slate-950 border-amber-300 font-bold shadow-md scale-102'
                     : isUnlocked
-                    ? 'bg-slate-900 hover:bg-slate-800 text-slate-200 border-slate-700 hover:border-slate-500'
-                    : 'bg-slate-950/70 text-slate-500 border-slate-800 hover:border-slate-700'
+                    ? 'bg-[#241710] hover:bg-[#342217] text-amber-200 border-[#78593a]'
+                    : 'bg-[#150d08]/80 text-amber-900/60 border-[#3d2314]'
                 }`}
               >
                 <span className="text-xs leading-none">
                   {isUnlocked ? hero.exclusiveBuffs[0].icon : '🔒'}
                 </span>
                 <span>{hero.name.toUpperCase()}</span>
-                <span className={`text-[7px] px-1 rounded ${isSelected ? 'bg-slate-900 text-amber-300' : 'bg-slate-800 text-slate-400'}`}>
+                <span className={`text-[7px] px-1 rounded ${isSelected ? 'bg-slate-900 text-amber-300' : 'bg-[#140e09] text-amber-400/80'}`}>
                   Lv.{level}
                 </span>
               </button>
@@ -162,15 +162,15 @@ export const SkillTreeModal: React.FC<SkillTreeModalProps> = ({
             </span>
             <div className="min-w-0">
               <div className="flex items-baseline gap-2 flex-wrap">
-                <h3 className={`text-xs sm:text-sm font-bold ${heroTheme.themeColor}`}>
-                  {heroConfig.name.toUpperCase()} SKILL TREE
+                <h3 className={`text-xs sm:text-sm font-bold font-cinzel ${heroTheme.themeColor}`}>
+                  {heroConfig.name.toUpperCase()} TALENT GRIMOIRE
                 </h3>
                 <span className="text-xs font-vt text-amber-200/80">
                   {heroConfig.title} (Hero Level {heroLevel})
                 </span>
               </div>
-              <p className="text-[9px] sm:text-[10px] font-vt text-slate-300 truncate">
-                Playstyle: <span className="text-slate-100 font-bold">{heroTheme.tagline}</span> · Focus: <span className="text-sky-300">{heroTheme.focus}</span>
+              <p className="text-[9px] sm:text-[10px] font-vt text-amber-100/80 truncate">
+                Combat Way: <span className="text-amber-300 font-bold">{heroTheme.tagline}</span> · Focus: <span className="text-amber-200">{heroTheme.focus}</span>
               </p>
             </div>
           </div>
@@ -179,25 +179,25 @@ export const SkillTreeModal: React.FC<SkillTreeModalProps> = ({
             {/* Reset Hero Tree Button */}
             <button
               onClick={handleResetCurrentHero}
-              className="flex items-center gap-1.5 px-2.5 py-1 bg-rose-950/80 hover:bg-rose-900 border border-rose-700 text-rose-300 rounded text-[8px] sm:text-[9px] whitespace-nowrap cursor-pointer shadow-sm"
+              className="flex items-center gap-1.5 px-2.5 py-1 bg-rose-950/80 hover:bg-rose-900 border border-rose-700 text-rose-300 rounded text-[8px] sm:text-[9px] whitespace-nowrap cursor-pointer shadow-sm font-cinzel"
               title={`Refund all Soul Gems invested into ${heroConfig.name}'s talent tree`}
             >
               <RotateCcw className="w-3 h-3" />
-              <span>RESET {heroConfig.name.toUpperCase()} TREE</span>
+              <span>RESET {heroConfig.name.toUpperCase()} GRIMOIRE</span>
             </button>
           </div>
         </div>
 
         {/* Branch Filter Tabs Bar */}
-        <div className="flex items-center gap-2 border-b border-slate-800 px-3 py-1.5 sm:px-5 sm:py-2 bg-slate-900/50 overflow-x-auto shrink-0">
+        <div className="flex items-center gap-2 border-b border-[#573922] px-3 py-1.5 sm:px-5 sm:py-2 bg-[#19100a] overflow-x-auto shrink-0">
           {branches.map(b => (
             <button
               key={b.id}
               onClick={() => setSelectedBranch(b.id as any)}
-              className={`flex items-center gap-1.5 px-2.5 py-1 rounded text-[8px] sm:text-[9px] whitespace-nowrap shrink-0 cursor-pointer transition-all ${
+              className={`flex items-center gap-1.5 px-2.5 py-1 rounded text-[8px] sm:text-[9px] whitespace-nowrap shrink-0 cursor-pointer transition-all font-cinzel ${
                 selectedBranch === b.id
-                  ? 'bg-indigo-600 text-white font-bold shadow-md'
-                  : 'bg-slate-800 hover:bg-slate-700 text-slate-400'
+                  ? 'bg-gradient-to-r from-amber-600 to-amber-700 text-amber-100 font-bold border border-amber-300 shadow-md'
+                  : 'bg-[#241710] hover:bg-[#342217] text-amber-200 border border-[#78593a]'
               }`}
             >
               {b.icon}
@@ -218,12 +218,12 @@ export const SkillTreeModal: React.FC<SkillTreeModalProps> = ({
                 key={node.id}
                 className={`relative flex flex-col justify-between p-3 rounded-lg border-2 transition-all ${
                   isMaxed
-                    ? 'bg-amber-950/30 border-amber-500/80 shadow-[0_0_12px_rgba(245,158,11,0.15)]'
+                    ? 'bg-[#2a1b12]/90 border-amber-500/80 shadow-[0_0_12px_rgba(245,158,11,0.15)]'
                     : node.level > 0
-                    ? 'bg-slate-900/90 border-indigo-500/80'
+                    ? 'bg-[#1e130c]/90 border-amber-600/70'
                     : check.can
-                    ? 'bg-slate-900/60 border-slate-700 hover:border-slate-500'
-                    : 'bg-slate-950/80 border-slate-800/80 opacity-80'
+                    ? 'bg-[#18100a]/80 border-[#78593a] hover:border-amber-400'
+                    : 'bg-[#120b07]/80 border-[#3d2314] opacity-75'
                 }`}
               >
                 {/* Node Top Row: Icon + Name + Branch Badge */}
@@ -232,20 +232,20 @@ export const SkillTreeModal: React.FC<SkillTreeModalProps> = ({
                     isMaxed
                       ? 'bg-amber-500/20 border-amber-400/80'
                       : node.level > 0
-                      ? 'bg-indigo-500/20 border-indigo-400/80'
-                      : 'bg-slate-800 border-slate-700'
+                      ? 'bg-amber-600/20 border-amber-500/80'
+                      : 'bg-[#241710] border-[#78593a]'
                   }`}>
                     {node.icon}
                   </div>
 
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between gap-1.5 flex-wrap">
-                      <h4 className={`text-[10px] sm:text-xs font-bold leading-tight ${
-                        isMaxed ? 'text-amber-300' : 'text-slate-100'
+                      <h4 className={`text-[10px] sm:text-xs font-bold leading-tight font-cinzel ${
+                        isMaxed ? 'text-amber-300' : 'text-amber-100'
                       }`}>
                         {node.name}
                       </h4>
-                      <span className={`text-[7px] uppercase px-1.5 py-0.5 rounded font-bold border ${
+                      <span className={`text-[7px] uppercase px-1.5 py-0.5 rounded font-bold border font-cinzel ${
                         node.branch === 'offensive'
                           ? 'bg-red-950/70 text-red-300 border-red-800'
                           : node.branch === 'defensive'
@@ -258,16 +258,16 @@ export const SkillTreeModal: React.FC<SkillTreeModalProps> = ({
                       </span>
                     </div>
 
-                    <p className="text-[11px] sm:text-xs font-vt text-slate-300 leading-snug mt-1">
+                    <p className="text-[11px] sm:text-xs font-vt text-amber-150/90 leading-snug mt-1 text-amber-100/85">
                       {node.description}
                     </p>
                   </div>
                 </div>
 
                 {/* Level Progress Indicator */}
-                <div className="mt-2.5 pt-2 border-t border-slate-800/80 flex items-center justify-between gap-2">
+                <div className="mt-2.5 pt-2 border-t border-[#3d2314] flex items-center justify-between gap-2">
                   <div className="flex items-center gap-1.5">
-                    <span className="text-[8px] text-slate-400 font-bold uppercase">Rank:</span>
+                    <span className="text-[8px] text-amber-300/70 font-bold uppercase font-cinzel">Rank:</span>
                     <div className="flex items-center gap-1">
                       {Array.from({ length: node.maxLevel }).map((_, idx) => (
                         <div
@@ -275,12 +275,12 @@ export const SkillTreeModal: React.FC<SkillTreeModalProps> = ({
                           className={`w-4 h-2 rounded-xs border ${
                             idx < node.level
                               ? 'bg-amber-400 border-amber-300 shadow-[0_0_6px_rgba(251,191,36,0.6)]'
-                              : 'bg-slate-800 border-slate-700'
+                              : 'bg-[#241710] border-[#573922]'
                           }`}
                         />
                       ))}
                     </div>
-                    <span className="text-[8px] text-slate-400 ml-1">
+                    <span className="text-[8px] text-amber-300/70 ml-1">
                       ({node.level}/{node.maxLevel})
                     </span>
                   </div>
@@ -288,7 +288,7 @@ export const SkillTreeModal: React.FC<SkillTreeModalProps> = ({
                   {/* Upgrade / Max Button */}
                   <div>
                     {isMaxed ? (
-                      <span className="flex items-center gap-1 text-[8px] font-bold text-amber-400 bg-amber-950/80 border border-amber-500 px-2 py-1 rounded">
+                      <span className="flex items-center gap-1 text-[8px] font-bold text-amber-400 bg-amber-950/80 border border-amber-500 px-2 py-1 rounded font-cinzel">
                         <CheckCircle2 className="w-3 h-3" />
                         <span>MAXED</span>
                       </span>
@@ -297,13 +297,13 @@ export const SkillTreeModal: React.FC<SkillTreeModalProps> = ({
                         type="button"
                         onClick={() => handleUpgrade(node.id)}
                         disabled={!check.can}
-                        className={`flex items-center gap-1 px-2.5 py-1 rounded text-[8px] sm:text-[9px] font-bold cursor-pointer transition-all border ${
+                        className={`flex items-center gap-1 px-2.5 py-1 rounded text-[8px] sm:text-[9px] font-bold cursor-pointer transition-all border font-cinzel ${
                           check.can
-                            ? 'bg-indigo-600 hover:bg-indigo-500 text-white border-indigo-400 shadow-md active:scale-95'
-                            : 'bg-slate-900 text-slate-500 border-slate-800 cursor-not-allowed opacity-60'
+                            ? 'bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-amber-100 border-amber-300 shadow-md active:scale-95'
+                            : 'bg-[#241710] text-amber-900 border-[#573922] cursor-not-allowed opacity-60'
                         }`}
                       >
-                        <Sparkles className="w-3 h-3 text-purple-300" />
+                        <Sparkles className="w-3 h-3 text-amber-300" />
                         <span>UPGRADE ({nextCost} GEMS)</span>
                       </button>
                     )}
@@ -323,17 +323,17 @@ export const SkillTreeModal: React.FC<SkillTreeModalProps> = ({
         </div>
 
         {/* Modal Bottom Status Bar */}
-        <div className="border-t border-slate-800 px-3 py-2 sm:px-5 sm:py-2.5 bg-slate-900/90 flex items-center justify-between text-[8px] sm:text-[9px] text-slate-400 shrink-0">
+        <div className="border-t border-[#573922] px-3 py-2 sm:px-5 sm:py-2.5 bg-[#19100a] flex items-center justify-between text-[8px] sm:text-[9px] text-amber-300/70 shrink-0 font-cinzel">
           <div className="flex items-center gap-1.5 truncate">
-            <span className="text-amber-300 font-bold">PRO TIP:</span>
-            <span className="truncate">
-              Talents are permanently bound to {heroConfig.name} and apply whenever you enter the dungeon!
+            <span className="text-amber-300 font-bold">LORE:</span>
+            <span className="truncate font-vt text-xs text-amber-200/80">
+              Talents are inscribed into {heroConfig.name}'s soul and empower them throughout the catacombs!
             </span>
           </div>
 
           <div className="flex items-center gap-2 shrink-0">
-            <span className="text-slate-300 font-vt text-xs">
-              Total Talents Unlocked: <span className="text-amber-300 font-bold">{heroNodes.filter(n => n.level > 0).length}/{heroNodes.length}</span>
+            <span className="font-vt text-xs text-amber-200/80">
+              Talents Inscribed: <span className="text-amber-300 font-bold">{heroNodes.filter(n => n.level > 0).length}/{heroNodes.length}</span>
             </span>
           </div>
         </div>

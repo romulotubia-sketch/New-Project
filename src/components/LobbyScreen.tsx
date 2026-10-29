@@ -755,11 +755,11 @@ export const LobbyScreen: React.FC<LobbyScreenProps> = ({ onStartGame, onOpenSki
 
       {/* Top Unobtrusive Guild House HUD Bar (Keeps bottom of screen 100% clear of text overlays!) */}
       <header className="relative z-20 pointer-events-none flex items-start justify-between gap-2 px-3 py-2 lg:px-5 lg:py-3">
-        <div className="pointer-events-auto flex flex-wrap items-center gap-2.5 bg-slate-950/90 border-2 border-slate-800 px-3 py-1.5 rounded-lg shadow-lg max-w-[68vw] sm:max-w-none">
+        <div className="pointer-events-auto flex flex-wrap items-center gap-2.5 bg-[#140e09]/95 border-2 border-[#78593a] px-3 py-1.5 rounded-lg shadow-2xl max-w-[68vw] sm:max-w-none">
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-[10px] sm:text-xs lg:text-sm font-bold text-amber-400 whitespace-nowrap">
-                GUILD LIVING ROOM
+              <h1 className="text-[10px] sm:text-xs lg:text-sm font-bold text-amber-300 font-cinzel whitespace-nowrap tracking-wider">
+                ADVENTURERS' GUILD HALL
               </h1>
               <button
                 type="button"
@@ -768,21 +768,21 @@ export const LobbyScreen: React.FC<LobbyScreenProps> = ({ onStartGame, onOpenSki
                   setInspectingClass(pickedClass || 'knight');
                   setInspectorTab('loadout');
                 }}
-                className="flex items-center gap-1 text-[8px] sm:text-[9px] font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 border border-amber-200 px-2 py-1 rounded cursor-pointer whitespace-nowrap transition-colors"
+                className="flex items-center gap-1 text-[8px] sm:text-[9px] font-bold text-[#1a0f07] bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 border border-amber-200 px-2 py-1 rounded cursor-pointer whitespace-nowrap transition-colors shadow-sm"
               >
                 <Users className="w-3 h-3 shrink-0" />
                 <span>CHOOSE HERO</span>
               </button>
             </div>
-            <p className="text-[11px] sm:text-xs text-slate-300 font-vt leading-tight mt-0.5">
+            <p className="text-[11px] sm:text-xs text-amber-200/80 font-vt leading-tight mt-0.5">
               {pickedClass && activeHeroConfig
-                ? `Walk North into the Portal · Tap any Hero or Choose Hero to switch`
-                : 'Tap any hero in the house or press Choose Hero to inspect Skills & Passives'}
+                ? `Venture North into the Portal · Tap any Hero or Choose Hero to switch`
+                : 'Seek out any companion in the hall or select Choose Hero to inspect Spells & Passives'}
             </p>
           </div>
 
           {pickedClass && activeHeroConfig && (
-            <div className="flex items-center gap-1.5 border-l border-slate-800 pl-2.5">
+            <div className="flex items-center gap-1.5 border-l border-[#573922] pl-2.5">
               <button
                 type="button"
                 onClick={() => {
@@ -790,7 +790,7 @@ export const LobbyScreen: React.FC<LobbyScreenProps> = ({ onStartGame, onOpenSki
                   setInspectingClass(pickedClass);
                   setInspectorTab('loadout');
                 }}
-                className="flex items-center gap-1.5 bg-amber-500/15 hover:bg-amber-500/25 border border-amber-400 px-2.5 py-1 rounded text-[9px] text-amber-300 cursor-pointer whitespace-nowrap min-h-[32px]"
+                className="flex items-center gap-1.5 bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/80 px-2.5 py-1 rounded text-[9px] text-amber-300 cursor-pointer whitespace-nowrap min-h-[32px]"
                 title="View active hero Exclusive Buffs, Stats, Skills & Skill Tree"
               >
                 <UserCheck className="w-3.5 h-3.5 text-amber-300 shrink-0" />
@@ -804,7 +804,7 @@ export const LobbyScreen: React.FC<LobbyScreenProps> = ({ onStartGame, onOpenSki
               <button
                 type="button"
                 onClick={() => requestPortalConfirmRef.current()}
-                className="flex items-center gap-1 bg-purple-900/90 hover:bg-purple-800 border border-purple-400 px-2.5 py-1 rounded text-[9px] text-purple-100 font-bold cursor-pointer whitespace-nowrap min-h-[32px]"
+                className="flex items-center gap-1 bg-gradient-to-r from-purple-900 to-indigo-950 hover:from-purple-800 hover:to-indigo-900 border border-purple-400 px-2.5 py-1 rounded text-[9px] text-purple-100 font-bold cursor-pointer whitespace-nowrap min-h-[32px] shadow-md shadow-purple-950/50"
                 title="Confirm difficulty & enter Dungeon Portal"
               >
                 <span>ENTER PORTAL</span>
@@ -819,10 +819,10 @@ export const LobbyScreen: React.FC<LobbyScreenProps> = ({ onStartGame, onOpenSki
                   setPickedClass(null);
                   setNearbyPrompt(null);
                 }}
-                className="flex items-center gap-1 bg-slate-900 hover:bg-slate-800 border border-slate-700 px-2 py-1 rounded text-[9px] text-slate-300 cursor-pointer whitespace-nowrap min-h-[32px]"
+                className="flex items-center gap-1 bg-[#241710] hover:bg-[#342217] border border-[#78593a] px-2 py-1 rounded text-[9px] text-amber-200 cursor-pointer whitespace-nowrap min-h-[32px]"
                 title="Zoom out to full Guild House overview"
               >
-                <Compass className="w-3.5 h-3.5 text-sky-400 shrink-0" />
+                <Compass className="w-3.5 h-3.5 text-amber-400 shrink-0" />
                 <span className="hidden sm:inline">ALL HEROES</span>
               </button>
             </div>
@@ -851,7 +851,7 @@ export const LobbyScreen: React.FC<LobbyScreenProps> = ({ onStartGame, onOpenSki
               sounds.toggleMute();
               setSoundEnabled(sounds.enabled);
             }}
-            className="p-2 bg-slate-950/90 hover:bg-slate-800 border border-slate-700 rounded text-slate-300 cursor-pointer min-h-[36px] min-w-[36px] flex items-center justify-center shrink-0"
+            className="p-2 bg-[#1a120c]/90 hover:bg-[#2e1d13] border border-[#78593a] rounded text-amber-200 cursor-pointer min-h-[36px] min-w-[36px] flex items-center justify-center shrink-0 shadow-md"
             title="Toggle Audio"
           >
             {soundEnabled ? <Volume2 className="w-4 h-4 text-emerald-400" /> : <VolumeX className="w-4 h-4 text-rose-400" />}
@@ -860,7 +860,7 @@ export const LobbyScreen: React.FC<LobbyScreenProps> = ({ onStartGame, onOpenSki
           <button
             type="button"
             onClick={onOpenSkillTree}
-            className="flex items-center gap-1.5 bg-purple-950/90 hover:bg-purple-900 border-2 border-purple-500 px-2.5 py-1.5 rounded text-purple-200 cursor-pointer transition-colors tabular-nums min-h-[36px] whitespace-nowrap shrink-0"
+            className="flex items-center gap-1.5 bg-gradient-to-r from-purple-950 to-indigo-950 hover:from-purple-900 hover:to-indigo-900 border-2 border-purple-500/80 px-2.5 py-1.5 rounded text-purple-200 cursor-pointer transition-colors tabular-nums min-h-[36px] whitespace-nowrap shrink-0 shadow-md"
           >
             <Sparkles className="w-3.5 h-3.5 text-purple-300 shrink-0" />
             <span className="text-[9px] sm:text-[10px] font-bold">{soulGems} GEMS</span>
@@ -869,7 +869,7 @@ export const LobbyScreen: React.FC<LobbyScreenProps> = ({ onStartGame, onOpenSki
           <button
             type="button"
             onClick={() => setShowCodex(true)}
-            className="flex items-center gap-1.5 bg-slate-950/90 hover:bg-slate-800 border border-slate-700 px-2.5 py-1.5 rounded text-slate-200 text-[9px] sm:text-[10px] cursor-pointer transition-colors min-h-[36px] whitespace-nowrap shrink-0"
+            className="flex items-center gap-1.5 bg-[#1a120c]/90 hover:bg-[#2e1d13] border border-[#78593a] px-2.5 py-1.5 rounded text-amber-200 text-[9px] sm:text-[10px] cursor-pointer transition-colors min-h-[36px] whitespace-nowrap shrink-0 shadow-md"
           >
             <BookOpen className="w-3.5 h-3.5 text-amber-400 shrink-0" />
             <span className="hidden sm:inline">CODEX</span>
@@ -878,10 +878,10 @@ export const LobbyScreen: React.FC<LobbyScreenProps> = ({ onStartGame, onOpenSki
           <button
             type="button"
             onClick={() => setShowControls(true)}
-            className="p-2 bg-slate-950/90 hover:bg-slate-800 border border-slate-700 rounded text-slate-300 cursor-pointer min-h-[36px] min-w-[36px] flex items-center justify-center shrink-0"
+            className="p-2 bg-[#1a120c]/90 hover:bg-[#2e1d13] border border-[#78593a] rounded text-amber-200 cursor-pointer min-h-[36px] min-w-[36px] flex items-center justify-center shrink-0 shadow-md"
             title="Controls Guide"
           >
-            <HelpCircle className="w-4 h-4 text-sky-400" />
+            <HelpCircle className="w-4 h-4 text-amber-400" />
           </button>
 
           <button
@@ -890,7 +890,7 @@ export const LobbyScreen: React.FC<LobbyScreenProps> = ({ onStartGame, onOpenSki
               sounds.shoot('pistol');
               setShowSettings(true);
             }}
-            className="p-2 bg-slate-950/90 hover:bg-slate-800 border border-slate-700 rounded text-slate-300 cursor-pointer min-h-[36px] min-w-[36px] flex items-center justify-center shrink-0"
+            className="p-2 bg-[#1a120c]/90 hover:bg-[#2e1d13] border border-[#78593a] rounded text-amber-200 cursor-pointer min-h-[36px] min-w-[36px] flex items-center justify-center shrink-0 shadow-md"
             title="Settings"
           >
             <Settings className="w-4 h-4 text-amber-400" />
@@ -912,8 +912,8 @@ export const LobbyScreen: React.FC<LobbyScreenProps> = ({ onStartGame, onOpenSki
                 cx="52"
                 cy="52"
                 r="42"
-                fill="rgba(9, 13, 22, 0.65)"
-                stroke="#334155"
+                fill="rgba(24, 16, 12, 0.75)"
+                stroke="#78593a"
                 strokeWidth="2.5"
               />
               <line
@@ -922,8 +922,8 @@ export const LobbyScreen: React.FC<LobbyScreenProps> = ({ onStartGame, onOpenSki
                 y1="52"
                 x2="52"
                 y2="52"
-                stroke="#38bdf8"
-                strokeWidth="3"
+                stroke="rgba(245, 158, 11, 0.65)"
+                strokeWidth="3.5"
                 strokeLinecap="round"
               />
               <circle
@@ -931,8 +931,8 @@ export const LobbyScreen: React.FC<LobbyScreenProps> = ({ onStartGame, onOpenSki
                 cx="52"
                 cy="52"
                 r="17"
-                fill="#0284c7"
-                stroke="#bae6fd"
+                fill="#b45309"
+                stroke="#fef08a"
                 strokeWidth="2.5"
               />
             </svg>
@@ -2073,44 +2073,44 @@ export const LobbyScreen: React.FC<LobbyScreenProps> = ({ onStartGame, onOpenSki
 
       {/* Controls Modal */}
       {showControls && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-3">
-          <div className="bg-slate-950 border-2 border-sky-500 p-5 rounded-lg max-w-md w-full max-h-[90dvh] overflow-y-auto shadow-2xl">
-            <h3 className="text-xs font-bold text-sky-400 mb-4 flex items-center gap-2">
-              <HelpCircle className="w-4 h-4" />
-              <span>CONTROLS GUIDE</span>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-3">
+          <div className="bg-[#140e09] border-2 border-[#b45309] p-5 rounded-xl max-w-md w-full max-h-[90dvh] overflow-y-auto shadow-2xl">
+            <h3 className="text-xs font-bold text-amber-300 font-cinzel mb-4 flex items-center gap-2 tracking-wider">
+              <HelpCircle className="w-4 h-4 text-amber-400" />
+              <span>ADVENTURER'S MANUAL</span>
             </h3>
-            <div className="space-y-2 text-slate-300 font-vt text-base">
-              <div className="flex justify-between border-b border-slate-800 pb-1">
+            <div className="space-y-2 text-amber-100/90 font-vt text-base">
+              <div className="flex justify-between border-b border-[#3d2314] pb-1">
                 <span className="text-amber-300">Click / Tap Hero in House</span>
-                <span>Inspect Stats, Skills &amp; Skill Tree</span>
+                <span>Inspect Stats, Spells &amp; Talent Tree</span>
               </div>
-              <div className="flex justify-between border-b border-slate-800 pb-1">
-                <span className="text-amber-300">WASD / Joystick / Tap Floor</span>
-                <span>Walk Around House &amp; Dungeon</span>
+              <div className="flex justify-between border-b border-[#3d2314] pb-1">
+                <span className="text-amber-300">WASD / Compass / Tap Floor</span>
+                <span>Traverse Hall &amp; Catacombs</span>
               </div>
-              <div className="flex justify-between border-b border-slate-800 pb-1">
-                <span className="text-amber-300">Walk to North Portal / [F]</span>
-                <span>Enter Dungeon Run</span>
+              <div className="flex justify-between border-b border-[#3d2314] pb-1">
+                <span className="text-amber-300">Approach Portal / [F]</span>
+                <span>Enter Dungeon Depths</span>
               </div>
-              <div className="flex justify-between border-b border-slate-800 pb-1">
-                <span className="text-amber-300">Left Click / Attack Button</span>
-                <span>Attack (Auto-Targets Enemies)</span>
+              <div className="flex justify-between border-b border-[#3d2314] pb-1">
+                <span className="text-amber-300">Left Click / Strike Button</span>
+                <span>Attack (Auto-Aims Foes)</span>
               </div>
-              <div className="flex justify-between border-b border-slate-800 pb-1">
+              <div className="flex justify-between border-b border-[#3d2314] pb-1">
                 <span className="text-amber-300">SPACE / E / R</span>
-                <span>Skills 1, 2 &amp; Ultimate</span>
+                <span>Spells 1, 2 &amp; Ultimate Magic</span>
               </div>
-              <div className="flex justify-between border-b border-slate-800 pb-1">
+              <div className="flex justify-between border-b border-[#3d2314] pb-1">
                 <span className="text-amber-300">Q / F / C</span>
-                <span>Swap Weapon / Interact / Camp Rest</span>
+                <span>Swap Relic / Interact / Meditate Rest</span>
               </div>
             </div>
             <button
               type="button"
               onClick={() => setShowControls(false)}
-              className="w-full mt-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 rounded text-[10px] cursor-pointer"
+              className="w-full mt-5 py-2.5 bg-gradient-to-r from-amber-600 to-amber-800 hover:from-amber-500 hover:to-amber-700 text-amber-100 border border-amber-400 rounded-lg text-[10px] font-bold cursor-pointer transition-all shadow-md font-cinzel"
             >
-              GOT IT
+              PROCEED
             </button>
           </div>
         </div>
@@ -2119,10 +2119,10 @@ export const LobbyScreen: React.FC<LobbyScreenProps> = ({ onStartGame, onOpenSki
       {/* Armory / Codex Modal */}
       {showCodex && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-4">
-          <div className="bg-slate-950 border-2 border-amber-500 p-6 rounded-lg max-w-2xl w-full max-h-[82vh] flex flex-col shadow-2xl">
-            <h3 className="text-xs font-bold text-amber-400 mb-4 flex items-center gap-2">
-              <BookOpen className="w-4 h-4" />
-              <span>DUNGEON WEAPON CODEX ({Object.keys(WEAPON_REGISTRY).length})</span>
+          <div className="bg-[#140e09] border-2 border-[#b45309] p-6 rounded-xl max-w-2xl w-full max-h-[82vh] flex flex-col shadow-2xl">
+            <h3 className="text-xs font-bold text-amber-300 font-cinzel mb-4 flex items-center gap-2 tracking-wider">
+              <BookOpen className="w-4 h-4 text-amber-400" />
+              <span>ANCIENT RELICS &amp; WEAPON CODEX ({Object.keys(WEAPON_REGISTRY).length})</span>
             </h3>
             <div className="flex-1 overflow-y-auto grid grid-cols-1 md:grid-cols-2 gap-3 pr-2">
               {Object.values(WEAPON_REGISTRY).map(w => {
@@ -2135,23 +2135,23 @@ export const LobbyScreen: React.FC<LobbyScreenProps> = ({ onStartGame, onOpenSki
                     ? 'text-purple-400 border-purple-500 bg-purple-950/40'
                     : w.rarity === 'rare'
                     ? 'text-sky-400 border-sky-500 bg-sky-950/40'
-                    : 'text-slate-300 border-slate-700 bg-slate-900/60';
+                    : 'text-amber-200 border-[#78593a] bg-[#1d130c]/70';
 
                 return (
                   <div key={w.id} className={`p-3 border-2 rounded-lg flex flex-col justify-between ${rarityColor}`}>
                     <div>
                       <div className="flex justify-between items-center text-[10px] mb-1">
-                        <span className="font-bold text-slate-100">{w.name}</span>
+                        <span className="font-bold text-amber-100 font-cinzel">{w.name}</span>
                         <span className="text-[8px] uppercase tracking-wider font-bold">{w.rarity}</span>
                       </div>
-                      <div className="text-xs text-slate-400 uppercase tracking-wider mb-1 font-vt">
-                        {w.type} {w.isMelee ? '· MELEE DEFLECT' : '· RANGED'}
+                      <div className="text-xs text-amber-300/70 uppercase tracking-wider mb-1 font-vt">
+                        {w.type} {w.isMelee ? '· MELEE DEFLECT' : '· ENCHANTED CAST'}
                       </div>
-                      <p className="text-xs text-slate-300 font-vt mb-2">{w.description}</p>
+                      <p className="text-xs text-amber-100/80 font-vt mb-2">{w.description}</p>
                     </div>
-                    <div className="flex items-center justify-between text-xs text-slate-300 font-vt border-t border-slate-800/80 pt-1.5 tabular-nums">
+                    <div className="flex items-center justify-between text-xs text-amber-200 font-vt border-t border-[#3d2314] pt-1.5 tabular-nums">
                       <span className="text-red-400">DMG {w.damage}</span>
-                      <span className="text-cyan-400">MP {w.energyCost}</span>
+                      <span className="text-indigo-300">MANA {w.energyCost}</span>
                       <span className="text-amber-400">CRIT {Math.round(w.critChance * 100)}%</span>
                       <span className="text-emerald-400">{w.fireRate}/s</span>
                     </div>
@@ -2162,7 +2162,7 @@ export const LobbyScreen: React.FC<LobbyScreenProps> = ({ onStartGame, onOpenSki
             <button
               type="button"
               onClick={() => setShowCodex(false)}
-              className="w-full mt-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 rounded text-[10px] cursor-pointer"
+              className="w-full mt-4 py-2.5 bg-[#241710] hover:bg-[#342217] text-amber-200 border border-[#78593a] rounded-lg text-[10px] font-bold cursor-pointer transition-colors font-cinzel"
             >
               CLOSE CODEX
             </button>

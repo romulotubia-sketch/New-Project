@@ -46,6 +46,10 @@
   font-family: 'VT323', monospace;
 }
 
+.font-cinzel {
+  font-family: 'Cinzel', serif;
+}
+
 .pixel-art {
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
