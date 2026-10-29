@@ -14,7 +14,12 @@ interface MobileControlsProps {
 const MAX_STICK_RADIUS = 42;
 
 export const MobileControls: React.FC<MobileControlsProps> = ({ engine }) => {
-  const { hidePcKeyLabels } = useGameSettings();
+  const { hidePcKeyLabels, joystickScale } = useGameSettings();
+  const joystickScaleRef = useRef<number>(joystickScale);
+  useEffect(() => {
+    joystickScaleRef.current = joystickScale;
+  }, [joystickScale]);
+
   const joystickZoneRef = useRef<HTMLDivElement>(null);
   const svgWrapRef = useRef<HTMLDivElement>(null);
   const outerRingRef = useRef<SVGCircleElement>(null);
@@ -74,11 +79,12 @@ export const MobileControls: React.FC<MobileControlsProps> = ({ engine }) => {
 
       // If thumb lands on the visible ring, preserve ring center for immediate directional tilt;
       // if thumb lands further out inside the catch zone, slide anchor smoothly within safe bounds
+      const currentScale = joystickScaleRef.current || 1.0;
       let anchorX = restX;
       let anchorY = restY;
-      const edgePad = Math.min(48, rect.width * 0.35);
-      if (distFromRest > 42 && rect.width > edgePad * 2) {
-        const shift = distFromRest - 22;
+      const edgePad = Math.min(48 * currentScale, rect.width * 0.35);
+      if (distFromRest > 42 * currentScale && rect.width > edgePad * 2) {
+        const shift = distFromRest - 22 * currentScale;
         const angle = Math.atan2(dyFromRest, dxFromRest);
         anchorX = Math.max(rect.left + edgePad, Math.min(rect.right - edgePad, restX + Math.cos(angle) * shift));
         anchorY = Math.max(rect.top + edgePad, Math.min(rect.bottom - edgePad, restY + Math.sin(angle) * shift));
@@ -90,17 +96,19 @@ export const MobileControls: React.FC<MobileControlsProps> = ({ engine }) => {
     };
 
     const updateFromPoint = (clientX: number, clientY: number) => {
+      const currentScale = joystickScaleRef.current || 1.0;
+      const effectiveMaxDist = MAX_STICK_RADIUS * currentScale;
       const dx = clientX - anchorClientRef.current.x;
       const dy = clientY - anchorClientRef.current.y;
       const dist = Math.hypot(dx, dy);
-      const clampedDist = Math.min(dist, MAX_STICK_RADIUS);
+      const clampedDist = Math.min(dist, effectiveMaxDist);
       const angle = dist > 0.0001 ? Math.atan2(dy, dx) : 0;
 
       const sx = dist > 0.0001 ? Math.cos(angle) * clampedDist : 0;
       const sy = dist > 0.0001 ? Math.sin(angle) * clampedDist : 0;
 
-      stickRef.current = { x: sx, y: sy, active: true };
-      engine.setJoystick(sx / MAX_STICK_RADIUS, sy / MAX_STICK_RADIUS, true);
+      stickRef.current = { x: sx / currentScale, y: sy / currentScale, active: true };
+      engine.setJoystick(sx / effectiveMaxDist, sy / effectiveMaxDist, true);
     };
 
     const resetStick = () => {
@@ -260,6 +268,10 @@ export const MobileControls: React.FC<MobileControlsProps> = ({ engine }) => {
         {/* Bottom-Left Pinned 360° Virtual Joystick (Isolated from right-side skill controls) */}
         <div
           ref={joystickZoneRef}
+          style={{
+            transform: `scale(${joystickScale})`,
+            transformOrigin: 'bottom left',
+          }}
           className={`absolute bottom-0 left-0 pointer-events-auto touch-none cursor-grab active:cursor-grabbing flex items-center justify-center game-touch-lock ${
             isCompactViewport ? 'w-32 h-32' : 'w-36 h-36 sm:w-40 sm:h-40 lg:w-44 lg:h-44'
           }`}

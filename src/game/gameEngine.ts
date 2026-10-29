@@ -39,6 +39,8 @@ export class GameEngine {
   public floatingTexts: FloatingText[] = [];
   public passiveBuffs: PassiveBuffs;
   public camera = { x: 0, y: 0 };
+  public cameraPanOffset = { x: 0, y: 0 };
+  public isScreenDragging = false;
   public screenShake = 0;
   public isPaused = false;
   public isAwaitingRevive = false;
@@ -299,8 +301,20 @@ export class GameEngine {
     });
     this.player.x = startRoom.pixelX + (startRoom.width * TILE_SIZE) / 2;
     this.player.y = startRoom.pixelY + (startRoom.height * TILE_SIZE) / 2 + 56;
+    this.cameraPanOffset.x = 0;
+    this.cameraPanOffset.y = 0;
     this.camera.x = this.player.x;
     this.camera.y = this.player.y;
+  }
+
+  public panCamera(deltaX: number, deltaY: number) {
+    this.cameraPanOffset.x += deltaX;
+    this.cameraPanOffset.y += deltaY;
+  }
+
+  public recenterCamera() {
+    this.cameraPanOffset.x = 0;
+    this.cameraPanOffset.y = 0;
   }
 
   public update(dt: number, viewportWidth: number, viewportHeight: number) {
@@ -326,10 +340,30 @@ export class GameEngine {
     // 1. Update Player Movement & Timers
     this.updatePlayer(dt);
 
-    // 2. Frame-rate independent smooth camera follow
-    const camAlpha = 1 - Math.exp(-15 * dt);
-    this.camera.x += (this.player.x - this.camera.x) * camAlpha;
-    this.camera.y += (this.player.y - this.camera.y) * camAlpha;
+    // 2. Frame-rate independent smooth camera follow with screen drag / look-beyond offset
+    // Automatically and smoothly return camera to center on hero after dragging
+    if (!this.isScreenDragging) {
+      if (Math.abs(this.cameraPanOffset.x) > 0.05 || Math.abs(this.cameraPanOffset.y) > 0.05) {
+        const returnAlpha = 1 - Math.exp(-9 * dt);
+        this.cameraPanOffset.x += (0 - this.cameraPanOffset.x) * returnAlpha;
+        this.cameraPanOffset.y += (0 - this.cameraPanOffset.y) * returnAlpha;
+        if (Math.abs(this.cameraPanOffset.x) < 0.3) this.cameraPanOffset.x = 0;
+        if (Math.abs(this.cameraPanOffset.y) < 0.3) this.cameraPanOffset.y = 0;
+      }
+    }
+
+    // Clamp look-ahead offset so the hero remains safely on-screen and never lost in the margin
+    const maxLookMarginX = Math.max(120, viewportWidth * 0.44);
+    const maxLookMarginY = Math.max(90, viewportHeight * 0.44);
+    this.cameraPanOffset.x = Math.max(-maxLookMarginX, Math.min(maxLookMarginX, this.cameraPanOffset.x));
+    this.cameraPanOffset.y = Math.max(-maxLookMarginY, Math.min(maxLookMarginY, this.cameraPanOffset.y));
+
+    const targetCamX = this.player.x + this.cameraPanOffset.x;
+    const targetCamY = this.player.y + this.cameraPanOffset.y;
+
+    const camAlpha = 1 - Math.exp(-16 * dt);
+    this.camera.x += (targetCamX - this.camera.x) * camAlpha;
+    this.camera.y += (targetCamY - this.camera.y) * camAlpha;
 
     if (this.screenShake > 0) {
       this.screenShake = Math.max(0, this.screenShake - dt * 3.5);

@@ -170,7 +170,7 @@ export const HUD: React.FC<HUDProps> = ({
   onSwitchWeapon,
 }) => {
   const [, setHudTick] = useState(0);
-  const { hidePcKeyLabels } = useGameSettings();
+  const { hidePcKeyLabels, skillButtonsScale } = useGameSettings();
   const [viewport, setViewport] = useState(computeViewportState);
 
   const attackPointerIdRef = useRef<number | null>(null);
@@ -719,6 +719,10 @@ export const HUD: React.FC<HUDProps> = ({
         {/* invariant coordinates so using skills NEVER shifts button positions!  */}
         {/* ===================================================================== */}
         <div
+          style={{
+            transform: `scale(${skillButtonsScale})`,
+            transformOrigin: 'bottom right',
+          }}
           className={`absolute bottom-0 right-0 z-30 ${layout.container} pointer-events-auto touch-none select-none`}
         >
           {/* Switch Weapon Circular Button (Outer Left) */}

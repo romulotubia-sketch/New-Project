@@ -3,12 +3,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { GameEngine } from '../game/gameEngine';
 import { gameSettings, useGameSettings } from '../game/settings';
 import { sounds } from '../game/sound';
-import { Volume2, VolumeX, Sparkles, Home, Play, Smartphone, Keyboard } from 'lucide-react';
+import { Volume2, VolumeX, Sparkles, Home, Play, Smartphone, Keyboard, Settings } from 'lucide-react';
 import { PWAInstallButton, LandscapeModeButton } from './PWAInstallButton';
+import { SettingsModal } from './SettingsModal';
 
 interface PauseModalProps {
   engine?: GameEngine;
@@ -23,7 +24,8 @@ export const PauseModal: React.FC<PauseModalProps> = ({
   onOpenSkillTree,
   onReturnToLobby,
 }) => {
-  const [, setRefresh] = React.useState(0);
+  const [, setRefresh] = useState(0);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
   const { hidePcKeyLabels } = useGameSettings();
 
   return (
@@ -64,6 +66,19 @@ export const PauseModal: React.FC<PauseModalProps> = ({
           >
             <Play className="w-4 h-4 fill-current" />
             <span>RESUME TRIAL</span>
+          </button>
+
+          {/* Controls & Settings Modal Button */}
+          <button
+            type="button"
+            onClick={() => {
+              sounds.shoot('pistol');
+              setShowSettingsModal(true);
+            }}
+            className="sm:col-span-2 w-full py-2.5 px-3 bg-amber-950/40 hover:bg-amber-950/60 text-amber-200 border-2 border-amber-500/80 rounded-lg text-[10px] flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap font-cinzel font-bold shadow-md transition-colors"
+          >
+            <Settings className="w-4 h-4 text-amber-400 shrink-0" />
+            <span>CONTROLS &amp; LOOK-AHEAD SETTINGS</span>
           </button>
 
           {/* Hide PC Keybind Labels Setting Toggle */}
@@ -139,6 +154,10 @@ export const PauseModal: React.FC<PauseModalProps> = ({
           </div>
         </div>
       </div>
+
+      {showSettingsModal && (
+        <SettingsModal onClose={() => setShowSettingsModal(false)} />
+      )}
     </div>
   );
 };
